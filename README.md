@@ -6,8 +6,7 @@ kvclient -- kv storage
 使用 glide 依赖管理工具
 
 ```
-git config --global url."git@gitlab.mobvista.com:".insteadOf "http://gitlab.mobvista.com"
-glide get --insecure gitlab.mobvista.com/mtech/kvclient
+glide get github.com/hatlonely/kvclient
 ```
 
 ### 使用示例

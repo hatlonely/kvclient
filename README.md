@@ -95,7 +95,7 @@ func main() {
 
 使用 redis 的 hash 方式存储，会将 key 拆开成两部分分别作为 key 和 field，不支持 ttl，更节省内存
 
-``` json
+``` js
 {
     "class": "RedisClusterHash",
     "address": "127.0.0.1:7000,127.0.0.1:7001",     // redis 地址
@@ -111,7 +111,7 @@ func main() {
 
 使用 redis 的 string 方式存储，支持 ttl，比较耗费内存
 
-``` json
+``` js
 {
     "class": "RedisClusterString",
     "address": "127.0.0.1:7000,127.0.0.1:7001",     // redis 地址
@@ -130,7 +130,7 @@ func main() {
 
 受到客户端性能的影响，服务端（3台 i3.4xlarge，灌入 20亿数据）的极限 QPS 没有准确数据，在 5 台客户端机器同时访问的情况下，总QPS 达到 36w，99% 请求在 1ms 内返回
 
-``` json
+``` js
 {
     "class": "Aerospike",
     "address": "172.31.19.27:3000,172.31.25.40:3000,172.31.23.48:3000", // aerospike 地址
@@ -146,7 +146,7 @@ func main() {
 
 支持 ttl 的 LRU 本地内存缓存
 
-``` json
+``` js
 {
     "class": "GLocalCache",
     "size": 2000,               // 缓存最大的容量
@@ -166,7 +166,7 @@ bin/kvloader [-f configfile] [--producer.s3suffix yyymmdd]
 
 下面这个配置文件表示构造 10000 个 [kvclient.MyKey](pkg/kvclient/mykv.go)/[kvclient.MyVal](pkg/kvclient/mykv.go) 到 aerospike 中
 
-``` json
+``` js
 {
     "producer": {	// 数据生产者
         "class": "FakeMyKVProducer",
@@ -212,7 +212,7 @@ bin/kvloader [-f configfile] [--producer.s3suffix yyymmdd]
 
 从 s3 获取数据
 
-``` json
+``` js
 {
 	"class": "S3KVProducer",
 	"s3bucket": "mob-emr-test",		// s3 路径
@@ -229,7 +229,7 @@ bin/kvloader [-f configfile] [--producer.s3suffix yyymmdd]
 
 从文件中获取数据
 
-``` json
+``` js
 {
 	"class": "FileKVProducer",
 	"directory": "data",			// 加载的目录
@@ -245,7 +245,7 @@ bin/kvloader [-f configfile] [--producer.s3suffix yyymmdd]
 
 构造 [kvclient.MyKey](pkg/kvclient/mykv.go)/[kvclient.MyVal](pkg/kvclient/mykv.go) 数据
 
-``` json
+``` js
 {
 	"class": "FakeMyKVProducer",
 	"threadNum": 10,		// 构造数据的协程数
@@ -261,7 +261,7 @@ bin/kvloader [-f configfile] [--producer.s3suffix yyymmdd]
 
 使用 kv_client 将数据导入到 DB 中，aerospike/redis 等数据源
 
-``` json
+``` js
 {
 	"class": "DBKVConsumer",
 	"threadNum": 10,		// 协程数
@@ -296,7 +296,7 @@ bin/kvloader [-f configfile] [--producer.s3suffix yyymmdd]
 
 数据导出到文件中
 
-``` json
+``` js
 {
 	"class": "FileKVConsumer",
 	"filePath": "data/my",		// 导出文件路径
@@ -330,7 +330,7 @@ nIHfIkOMdu3wjljqIkpbx8JjcAZpGfGaH874	iCswPwL3ny4VUdn4uVTUvU6
 bin/bench [-f configfile]
 ```
 
-``` json
+``` js
 {
     "producer": {	// 数据生产者
         "class": "FileKVProducer",

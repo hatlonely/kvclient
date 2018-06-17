@@ -1,0 +1,63 @@
+{
+    "producer": {
+        "class": "FileKVProducer",
+        "directory": "../kvloader/data",
+        "threadNum": 10,
+        "verbose": true,
+        "coder": {
+            "class": "MyKVCoder"
+        }
+    },
+    "timeDistributionThreshold": [
+        "300us",
+        "500us",
+        "800us",
+        "1ms",
+        "2ms",
+        "5ms"
+    ],
+    "schedule": [
+        {
+            "readerNum": 0,
+            "writerNum": 8,
+            "startPercent": 0,
+            "endPercent": 25,
+            "times": 1
+        },
+        {
+            "readerNum": 8,
+            "writerNum": 0,
+            "startPercent": 25,
+            "endPercent": 50,
+            "times": 1
+        },
+        {
+            "readerNum": 30,
+            "writerNum": 0,
+            "startPercent": 50,
+            "endPercent": 100,
+            "times": 10
+        }
+    ],
+    "kvclient": {
+        "caches": [
+            "leveldb"
+        ],
+        "compressor": {
+            "package": "kvclient",
+            "class": "MyCompressor"
+        },
+        "serializer": {
+            "package": "kvclient",
+            "class": "MySerializer"
+        },
+        "leveldb": {
+            "class": "LevelDB",
+            "directory": "leveldb",
+            "dontFillCache": false,
+            "strict": 0,
+            "noWriteMerge": false,
+            "sync": false
+        }
+    }
+}

@@ -1,0 +1,17 @@
+{
+    "producer": {
+        "class": "FakeMyKVProducer",
+        "threadNum": 10,
+        "total": 1000000,
+        "keyLen": 36,
+        "valLen": 23
+    },
+    "consumer": {
+        "class": "FileKVConsumer",
+        "filePath": "data/my",
+        "fileNum": 10,
+        "coder": {
+            "class": "MyKVCoder"
+        }
+    }
+}

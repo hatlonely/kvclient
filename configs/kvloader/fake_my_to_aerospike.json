@@ -1,0 +1,37 @@
+{
+    "producer": {
+        "class": "FakeMyKVProducer",
+        "threadNum": 10,
+        "total": 10000,
+        "keyLen": 36,
+        "valLen": 23
+    },
+    "consumer": {
+        "class": "DBKVConsumer",
+        "threadNum": 10,
+        "batch": 100,
+        "verbose": true,
+        "kvclient": {
+            "caches": [
+                "aerospike"
+            ],
+            "compressor": {
+                "package": "kvclient",
+                "class": "OriginCompressor"
+            },
+            "serializer": {
+                "package": "kvclient",
+                "class": "ProtoSerializer"
+            },
+            "aerospike": {
+                "class": "Aerospike",
+                "address": "172.31.19.27:3000,172.31.25.40:3000,172.31.23.48:3000",
+                "namespace": "dmp",
+                "setname": "dsp",
+                "timeout": "200ms",
+                "expiration": "24h",
+                "retries": 4
+            }
+        }
+    }
+}

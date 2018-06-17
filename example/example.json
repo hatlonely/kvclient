@@ -1,0 +1,20 @@
+{
+    "caches": [
+        "gcache",
+        "redisHash"
+    ],
+    "gcache": {
+        "class": "GLocalCache",
+        "size": 2000,
+        "expiration": "15m"
+    },
+    "redisHash": {
+        "class": "RedisClusterHash",
+        "address": "127.0.0.1:7000",
+        "poolSize": 30,
+        "timeout": "1s",
+        "retries": 3,
+        "keyIdx": 8,
+        "keyLen": 7
+    }
+}

@@ -1,0 +1,28 @@
+{
+    "caches": [
+        "gcache",
+        "aerospike"
+    ],
+    "compressor": {
+        "package": "kvclient",
+        "class": "MyCompressor"
+    },
+    "serializer": {
+        "package": "kvclient",
+        "class": "MySerializer"
+    },
+    "gcache": {
+        "class": "GLocalCache",
+        "size": 2000,
+        "expiration": "15m"
+    },
+    "aerospike": {
+        "class": "Aerospike",
+        "address": "172.31.19.27:3000,172.31.25.40:3000,172.31.23.48:3000",
+        "namespace": "test",
+        "setname": "test",
+        "timeout": "200ms",
+        "expiration": "7d",
+        "retries": 4
+    }
+}

@@ -1,0 +1,36 @@
+{
+    "producer": {
+        "class": "FakeMyKVProducer",
+        "threadNum": 10,
+        "total": 10000,
+        "keyLen": 36,
+        "valLen": 23
+    },
+    "consumer": {
+        "class": "DBKVConsumer",
+        "threadNum": 10,
+        "batch": 100,
+        "verbose": true,
+        "kvclient": {
+            "caches": [
+                "redis"
+            ],
+            "compressor": {
+                "package": "kvclient",
+                "class": "MyCompressor"
+            },
+            "serializer": {
+                "package": "kvclient",
+                "class": "MySerializer"
+            },
+            "redis": {
+                "class": "RedisClusterString",
+                "address": "127.0.0.1:7000",
+                "poolSize": 30,
+                "timeout": "1s",
+                "retries": 3,
+                "expiration": "24h"
+            }
+        }
+    }
+}

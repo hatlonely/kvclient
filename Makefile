@@ -8,9 +8,9 @@ build: cmd/*/*.go pkg/*/*.go scripts/version.sh Makefile vendor
 	@go build -ldflags "-X 'main.AppVersion=`sh scripts/version.sh`'" cmd/kvloader/main.go && \
 	mkdir -p build/kvloader/bin && mv main build/kvloader/bin/kvloader && \
 	mkdir -p build/kvloader/configs && cp configs/kvloader/* build/kvloader/configs && \
-	go build -ldflags "-X 'main.AppVersion=`sh scripts/version.sh`'" cmd/bench/main.go && \
-	mkdir -p build/bench/bin && mv main build/bench/bin/bench && \
-	mkdir -p build/bench/configs && cp configs/bench/* build/bench/configs
+	go build -ldflags "-X 'main.AppVersion=`sh scripts/version.sh`'" cmd/kvbench/main.go && \
+	mkdir -p build/kvbench/bin && mv main build/kvbench/bin/kvbench && \
+	mkdir -p build/kvbench/configs && cp configs/kvbench/* build/kvbench/configs
 
 vendor: glide.lock glide.yaml
 	@echo "install golang dependency"

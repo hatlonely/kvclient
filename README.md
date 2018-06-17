@@ -324,10 +324,10 @@ nIHfIkOMdu3wjljqIkpbx8JjcAZpGfGaH874    iCswPwL3ny4VUdn4uVTUvU6
 
 ### 性能测试
 
-执行 `make build` 后，在 build/bench 目录下生成数据加载工具，configfile 指定配置文件
+执行 `make build` 后，在 build/kvbench 目录下生成数据加载工具，configfile 指定配置文件
 
 ```
-bin/bench [-f configfile]
+bin/kvbench [-f configfile]
 ```
 
 ``` js

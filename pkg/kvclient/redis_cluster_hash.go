@@ -89,14 +89,9 @@ type RedisClusterHash struct {
 	keyLen int
 }
 
-func (rc *RedisClusterHash) parseKey(key string) (string, string) {
-	if len(key) > rc.keyIdx+rc.keyLen {
-		return key[rc.keyIdx : rc.keyIdx+rc.keyLen], key[:rc.keyIdx] + key[rc.keyIdx+rc.keyLen:]
-	} else if len(key) > rc.keyIdx {
-		return key[rc.keyIdx:], key[:rc.keyIdx]
-	} else {
-		return "", key
-	}
+// Close redis client
+func (rc *RedisClusterHash) Close() error {
+	return rc.client.Close()
 }
 
 // Get get a key
@@ -162,4 +157,14 @@ func (rc *RedisClusterHash) SetBatch(keys []string, vals [][]byte) ([]error, err
 	}
 
 	return errs, nil
+}
+
+func (rc *RedisClusterHash) parseKey(key string) (string, string) {
+	if len(key) > rc.keyIdx+rc.keyLen {
+		return key[rc.keyIdx : rc.keyIdx+rc.keyLen], key[:rc.keyIdx] + key[rc.keyIdx+rc.keyLen:]
+	} else if len(key) > rc.keyIdx {
+		return key[rc.keyIdx:], key[:rc.keyIdx]
+	} else {
+		return "", key
+	}
 }

@@ -37,4 +37,5 @@ type Cache interface {
 	SetEx(key string, val []byte, expiration time.Duration) error   // set with expiration
 	SetNx(key string, val []byte) error                             // set if not exists
 	SetExNx(key string, val []byte, expiration time.Duration) error // set if not exists with expiration
+	Close() error
 }

@@ -25,6 +25,7 @@ func TestCache_Set_Get_Del(t *testing.T) {
 			WithKeyIdxLen(8, 7).
 			Build()
 		So(err, ShouldBeNil)
+		defer redisHash.Close()
 		redisString, err := NewRedisClusterStringBuilder().
 			WithAddress("127.0.0.1:7002").
 			WithRetries(3).
@@ -33,6 +34,7 @@ func TestCache_Set_Get_Del(t *testing.T) {
 			WithPoolSize(15).
 			Build()
 		So(err, ShouldBeNil)
+		defer redisString.Close()
 		aerospike, err := NewAerospikeBuilder().
 			WithAddress("127.0.0.1:3000").
 			WithNamespace("dmp").
@@ -42,9 +44,13 @@ func TestCache_Set_Get_Del(t *testing.T) {
 			WithExpiration(time.Duration(200) * time.Second).
 			Build()
 		So(err, ShouldBeNil)
+		defer aerospike.Close()
 		gcache := NewGLocalCacheBuilder().Build()
+		levelDB, err := NewLevelDBBuilder().Build()
+		So(err, ShouldBeNil)
+		defer levelDB.Close()
 
-		for i, ds := range []dsInterface{redisHash, redisString, aerospike, gcache} {
+		for i, ds := range []dsInterface{redisHash, redisString, aerospike, gcache, levelDB} {
 			Convey(fmt.Sprintf("loop-%v: get a key that not exists", i), func() {
 				val, err := ds.Get("name")
 				So(err, ShouldEqual, nil)

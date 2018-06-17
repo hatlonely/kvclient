@@ -1,8 +1,8 @@
-hash: 06b8a051ae99220797b6e0b8e0fbbf88ad172ef4af9c844fc144606d75fada27
-updated: 2018-05-25T12:28:30.960481+08:00
+hash: b38e1aec52fabfd348d65c7aee99821c3306b4f8545c073ef1d64fa9ed04f1a2
+updated: 2018-06-18T00:04:15.752204+08:00
 imports:
 - name: github.com/aerospike/aerospike-client-go
-  version: 9701404f4c60a6ea256595d24bf318f721a7e8b8
+  version: c10b5393e43bd60125aca6289c7b24879edb1787
   subpackages:
   - internal/lua
   - internal/lua/resources
@@ -15,7 +15,7 @@ imports:
   - types/rand
   - utils/buffer
 - name: github.com/aws/aws-sdk-go
-  version: f5c8a41f9fdc0f1b615a0f4899b88694ac2c509c
+  version: bfc1a07cf158c30c41a3eefba8aae043d0bb5bff
   subpackages:
   - aws
   - aws/awserr
@@ -27,6 +27,7 @@ imports:
   - aws/credentials/ec2rolecreds
   - aws/credentials/endpointcreds
   - aws/credentials/stscreds
+  - aws/csm
   - aws/defaults
   - aws/ec2metadata
   - aws/endpoints
@@ -37,6 +38,8 @@ imports:
   - internal/sdkrand
   - internal/shareddefaults
   - private/protocol
+  - private/protocol/eventstream
+  - private/protocol/eventstream/eventstreamapi
   - private/protocol/query
   - private/protocol/query/queryutil
   - private/protocol/rest
@@ -51,7 +54,7 @@ imports:
 - name: github.com/go-ini/ini
   version: 32e4be5f41bb918afb6e37c07426e2ddbcb6647e
 - name: github.com/go-redis/redis
-  version: 0f9028adf0837cf93c9705817493e5f6997cf026
+  version: 83fb42932f6145ce52df09860384a4653d2d332a
   subpackages:
   - internal
   - internal/consistenthash
@@ -62,8 +65,8 @@ imports:
   - internal/util
 - name: github.com/golang/protobuf
   version: b4deda0973fb4c70b50d226b1af49f3da59f5265
-  subpackages:
-  - proto
+- name: github.com/golang/snappy
+  version: 2e65f85255dbc3072edf28d6b5b8efc472979f5a
 - name: github.com/hashicorp/hcl
   version: 23c074d0eceb2b8a5bfdbb271ab780cde70f05a8
   subpackages:
@@ -108,17 +111,27 @@ imports:
   version: ee5fd03fd6acfd43e44aea0b4135958546ed8e73
 - name: github.com/spf13/viper
   version: b5e8006cbee93ec955a89ab31e0e3ce3204f3736
+- name: github.com/syndtr/goleveldb
+  version: e2150783cd35f5b607daca48afd8c57ec54cc995
+  subpackages:
+  - leveldb
+  - leveldb/cache
+  - leveldb/comparer
+  - leveldb/errors
+  - leveldb/filter
+  - leveldb/iterator
+  - leveldb/journal
+  - leveldb/memdb
+  - leveldb/opt
+  - leveldb/storage
+  - leveldb/table
+  - leveldb/util
 - name: github.com/yuin/gopher-lua
   version: b0fa786cf4ea360285924c4a7fd42325be57aec8
   subpackages:
   - ast
   - parse
   - pm
-- name: gitlab.mobvista.com/mtech/mgolang
-  version: 9a0a671f7e06ce5564497d3cb8e761c67c8f3e49
-  repo: http://gitlab.mobvista.com/mtech/mgolang
-  subpackages:
-  - pkg/mconst
 - name: golang.org/x/crypto
   version: 88942b9c40a4c9d203b82b3731787b672d6e809b
   subpackages:

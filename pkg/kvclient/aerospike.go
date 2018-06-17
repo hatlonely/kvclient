@@ -114,6 +114,12 @@ type Aerospike struct {
 	setname   string
 }
 
+// Close aerospike
+func (as *Aerospike) Close() error {
+	as.client.Close()
+	return nil
+}
+
 // Get a key
 func (as *Aerospike) Get(key string) ([]byte, error) {
 	ak, err := aerospike.NewKey(as.namespace, as.setname, key)

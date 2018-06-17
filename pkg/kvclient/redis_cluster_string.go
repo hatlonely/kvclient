@@ -83,6 +83,11 @@ type RedisClusterString struct {
 	expiration time.Duration
 }
 
+// Close redis client
+func (rc *RedisClusterString) Close() error {
+	return rc.client.Close()
+}
+
 // Get get a key
 func (rc *RedisClusterString) Get(key string) ([]byte, error) {
 	val, err := rc.client.Get(key).Result()

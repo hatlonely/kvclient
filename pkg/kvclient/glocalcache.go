@@ -45,6 +45,11 @@ type GLocalCache struct {
 	cache gcache.Cache
 }
 
+// Close cache. nothing to do
+func (lc *GLocalCache) Close() error {
+	return nil
+}
+
 // Set set a key
 func (lc *GLocalCache) Set(key string, val []byte) error {
 	return lc.cache.Set(key, val)

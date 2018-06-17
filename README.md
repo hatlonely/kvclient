@@ -20,19 +20,19 @@ glide get --insecure gitlab.mobvista.com/mtech/kvclient
 package main
 
 import (
-	"fmt"
+    "fmt"
 
-	"github.com/hatlonely/kvclient/pkg/cfg"
+    "github.com/hatlonely/kvclient/pkg/cfg"
 )
 
 // MyKey example of key
 type MyKey struct {
-	Message string `json:"message,omitempty"`
+    Message string `json:"message,omitempty"`
 }
 
 // MyVal example of value
 type MyVal struct {
-	Message string `json:"message,omitempty"`
+    Message string `json:"message,omitempty"`
 }
 
 // MyCompressor example of compressor
@@ -40,7 +40,7 @@ type MyCompressor struct{}
 
 // Compress key
 func (k *MyCompressor) Compress(key interface{}) string {
-	return key.(*MyKey).Message
+    return key.(*MyKey).Message
 }
 
 // MySerializer example of serailizer
@@ -48,44 +48,44 @@ type MySerializer struct{}
 
 // Marshal key
 func (s *MySerializer) Marshal(val interface{}) (buf []byte, err error) {
-	return []byte(val.(*MyVal).Message), nil
+    return []byte(val.(*MyVal).Message), nil
 }
 
 // Unmarshal key
 func (s *MySerializer) Unmarshal(buf []byte, val interface{}) (err error) {
-	pv, ok := val.(*MyVal)
-	if !ok {
-		return fmt.Errorf("val [%v] is not a type of MyVal", val)
-	}
-	pv.Message = string(buf)
-	return nil
+    pv, ok := val.(*MyVal)
+    if !ok {
+        return fmt.Errorf("val [%v] is not a type of MyVal", val)
+    }
+    pv.Message = string(buf)
+    return nil
 }
 
 func main() {
-	client, err := cfg.NewKVClientWithFile("example.json")
-	if err != nil {
-		panic(err)
-	}
-	client.SetCompressor(&MyCompressor{})
-	client.SetSerializer(&MySerializer{})
+    client, err := cfg.NewKVClientWithFile("example.json")
+    if err != nil {
+        panic(err)
+    }
+    client.SetCompressor(&MyCompressor{})
+    client.SetSerializer(&MySerializer{})
 
-	key1 := &MyKey{Message: "key"}
-	val1 := &MyVal{Message: "val"}
-	if err := client.Set(key1, val1); err != nil {
-		panic(err)
-	}
+    key1 := &MyKey{Message: "key"}
+    val1 := &MyVal{Message: "val"}
+    if err := client.Set(key1, val1); err != nil {
+        panic(err)
+    }
 
-	key2 := key1
-	val2 := &MyVal{}
-	ok, err := client.Get(key2, val2)
-	if err != nil {
-		panic(err)
-	}
-	if !ok {
-		fmt.Println("not found")
-	} else {
-		fmt.Printf("%#v\n", val2)
-	}
+    key2 := key1
+    val2 := &MyVal{}
+    ok, err := client.Get(key2, val2)
+    if err != nil {
+        panic(err)
+    }
+    if !ok {
+        fmt.Println("not found")
+    } else {
+        fmt.Printf("%#v\n", val2)
+    }
 }
 ```
 
@@ -134,8 +134,8 @@ func main() {
 {
     "class": "Aerospike",
     "address": "172.31.19.27:3000,172.31.25.40:3000,172.31.23.48:3000", // aerospike 地址
-    "namespace": "test",     // 命名空间
-    "setname": "test",       // 集合名称
+    "namespace": "test",    // 命名空间
+    "setname": "test",      // 集合名称
     "timeout": "200ms",     // 超时时间
     "expiration": "24h",    // 默认过期时间
     "retries": 4            // 重试次数
@@ -168,14 +168,14 @@ bin/kvloader [-f configfile] [--producer.s3suffix yyymmdd]
 
 ``` js
 {
-    "producer": {	// 数据生产者
+    "producer": {   // 数据生产者
         "class": "FakeMyKVProducer",
         "threadNum": 10,
         "total": 10000,
         "keyLen": 36,
         "valLen": 23
     },
-    "consumer": {	// 数据消费者
+    "consumer": {   // 数据消费者
         "class": "DBKVConsumer",
         "threadNum": 10,
         "batch": 100,
@@ -214,14 +214,14 @@ bin/kvloader [-f configfile] [--producer.s3suffix yyymmdd]
 
 ``` js
 {
-	"class": "S3KVProducer",
-	"s3bucket": "mob-emr-test",		// s3 路径
-	"s3prefix": "user/mtech/dmp",	// s3 前缀
-	"s3suffix": "20180617",			// s3 后缀，一般为日期
-	"verbose": true,				// 输出错误信息
-	"threadNum": 10,				// 加载协程数
-	"mod": 1,						// 部分加载份数
-	"idx": 0						// 加载的部分
+    "class": "S3KVProducer",
+    "s3bucket": "mob-emr-test",     // s3 路径
+    "s3prefix": "user/mtech/dmp",   // s3 前缀
+    "s3suffix": "20180617",         // s3 后缀，一般为日期
+    "verbose": true,                // 输出错误信息
+    "threadNum": 10,                // 加载协程数
+    "mod": 1,                       // 部分加载份数
+    "idx": 0                        // 加载的部分
 }
 ```
 
@@ -231,13 +231,13 @@ bin/kvloader [-f configfile] [--producer.s3suffix yyymmdd]
 
 ``` js
 {
-	"class": "FileKVProducer",
-	"directory": "data",			// 加载的目录
-	"threadNum": 10,				// 加载的协程数
-	"verbose": true,				// 输出错误信息
-	"coder": {						// 数据解码器
-		"class": "MyKVCoder"
-	}
+    "class": "FileKVProducer",
+    "directory": "data",            // 加载的目录
+    "threadNum": 10,                // 加载的协程数
+    "verbose": true,                // 输出错误信息
+    "coder": {                      // 数据解码器
+        "class": "MyKVCoder"
+    }
 }
 ```
 
@@ -247,11 +247,11 @@ bin/kvloader [-f configfile] [--producer.s3suffix yyymmdd]
 
 ``` js
 {
-	"class": "FakeMyKVProducer",
-	"threadNum": 10,		// 构造数据的协程数
-	"total": 10000,			// 构造的数据量
-	"keyLen": 36,			// 构造数据的 key 的长度
-	"valLen": 23			// 构造数据的 val 的长度
+    "class": "FakeMyKVProducer",
+    "threadNum": 10,        // 构造数据的协程数
+    "total": 10000,         // 构造的数据量
+    "keyLen": 36,           // 构造数据的 key 的长度
+    "valLen": 23            // 构造数据的 val 的长度
 }
 ```
 
@@ -263,32 +263,32 @@ bin/kvloader [-f configfile] [--producer.s3suffix yyymmdd]
 
 ``` js
 {
-	"class": "DBKVConsumer",
-	"threadNum": 10,		// 协程数
-	"batch": 100,			// 数据写入的批量
-	"verbose": true,		// 输出错误信息
-	"kvclient": {			// 数据源客户端
-		"caches": [
-			"aerospike"
-		],
-		"compressor": {
-			"package": "kvclient",
-			"class": "MyCompressor"
-		},
-		"serializer": {
-			"package": "kvclient",
-			"class": "MySerializer"
-		},
-		"aerospike": {
-			"class": "Aerospike",
-			"address": "172.31.19.27:3000,172.31.25.40:3000,172.31.23.48:3000",
-			"namespace": "test",
-			"setname": "test",
-			"timeout": "200ms",
-			"expiration": "24h",
-			"retries": 4
-		}
-	}
+    "class": "DBKVConsumer",
+    "threadNum": 10,        // 协程数
+    "batch": 100,           // 数据写入的批量
+    "verbose": true,        // 输出错误信息
+    "kvclient": {           // 数据源客户端
+        "caches": [
+            "aerospike"
+        ],
+        "compressor": {
+            "package": "kvclient",
+            "class": "MyCompressor"
+        },
+        "serializer": {
+            "package": "kvclient",
+            "class": "MySerializer"
+        },
+        "aerospike": {
+            "class": "Aerospike",
+            "address": "172.31.19.27:3000,172.31.25.40:3000,172.31.23.48:3000",
+            "namespace": "test",
+            "setname": "test",
+            "timeout": "200ms",
+            "expiration": "24h",
+            "retries": 4
+        }
+    }
 }
 ```
 
@@ -298,12 +298,12 @@ bin/kvloader [-f configfile] [--producer.s3suffix yyymmdd]
 
 ``` js
 {
-	"class": "FileKVConsumer",
-	"filePath": "data/my",		// 导出文件路径
-	"fileNum": 10,				// 导出文件数量
-	"coder": {					// 数据编码器
-		"class": "MyKVCoder"
-	}
+    "class": "FileKVConsumer",
+    "filePath": "data/my",      // 导出文件路径
+    "fileNum": 10,              // 导出文件数量
+    "coder": {                  // 数据编码器
+        "class": "MyKVCoder"
+    }
 }
 ```
 
@@ -318,8 +318,8 @@ bin/kvloader [-f configfile] [--producer.s3suffix yyymmdd]
 My 格式数据编解码([kvclient.MyKey](pkg/kvclient/mykv.go)/[kvclient.MyVal](pkg/kvclient/mykv.go))
 
 ```
-gF7L1neVLzDsNtrZsgWQPXD5NixcRGIa+f/F	37z2rkMdbEOyIP53+ah0/YH
-nIHfIkOMdu3wjljqIkpbx8JjcAZpGfGaH874	iCswPwL3ny4VUdn4uVTUvU6
+gF7L1neVLzDsNtrZsgWQPXD5NixcRGIa+f/F    37z2rkMdbEOyIP53+ah0/YH
+nIHfIkOMdu3wjljqIkpbx8JjcAZpGfGaH874    iCswPwL3ny4VUdn4uVTUvU6
 ```
 
 ### 性能测试
@@ -332,7 +332,7 @@ bin/bench [-f configfile]
 
 ``` js
 {
-    "producer": {	// 数据生产者
+    "producer": {   // 数据生产者
         "class": "FileKVProducer",
         "directory": "../kvloader/data",
         "threadNum": 10,
@@ -341,7 +341,7 @@ bin/bench [-f configfile]
             "class": "MyKVCoder"
         }
     },
-    "timeDistributionThreshold": [	// 耗时占比分布
+    "timeDistributionThreshold": [  // 耗时占比分布
         "300us",
         "500us",
         "800us",
@@ -349,13 +349,13 @@ bin/bench [-f configfile]
         "2ms",
         "5ms"
     ],
-    "schedule": [	// 性能测试调度组
+    "schedule": [   // 性能测试调度组
         {
-            "readerNum": 0,		// Get 协程数
-            "writerNum": 8,		// Set 协程数
-            "startPercent": 0,	// 使用数据的开始位置
-            "endPercent": 25,	// 使用数据的结束位置
-            "times": 1			// 重复次数
+            "readerNum": 0,     // Get 协程数
+            "writerNum": 8,     // Set 协程数
+            "startPercent": 0,  // 使用数据的开始位置
+            "endPercent": 25,   // 使用数据的结束位置
+            "times": 1          // 重复次数
         },
         {
             "readerNum": 8,
@@ -372,7 +372,7 @@ bin/bench [-f configfile]
             "times": 10
         }
     ],
-    "kvclient": {	 	// 被测试的数据源
+    "kvclient": {       // 被测试的数据源
         "caches": [
             "aerospike"
         ],

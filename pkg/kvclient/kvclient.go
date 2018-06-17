@@ -51,6 +51,18 @@ type kvClient struct {
 	serializer Serializer
 }
 
+// Close caches
+func (c *kvClient) Close() error {
+	var err error
+	for _, cache := range c.caches {
+		if cerr := cache.Close(); cerr != nil {
+			err = cerr
+		}
+	}
+
+	return err
+}
+
 // SetCompressor set compressor
 func (c *kvClient) SetCompressor(compressor Compressor) {
 	c.compressor = compressor

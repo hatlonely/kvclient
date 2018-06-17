@@ -47,6 +47,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	defer client.Close()
 	client.SetCompressor(&MyCompressor{})
 	client.SetSerializer(&MySerializer{})
 

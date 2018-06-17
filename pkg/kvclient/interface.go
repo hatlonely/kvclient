@@ -26,6 +26,7 @@ type KVClient interface {
 	SetEx(key interface{}, val interface{}, expiration time.Duration) error   // set with expiration
 	SetNx(key interface{}, val interface{}) error                             // set if not exists
 	SetExNx(key interface{}, val interface{}, expiration time.Duration) error // set if not exists with expiration
+	Close() error
 }
 
 // Cache interface

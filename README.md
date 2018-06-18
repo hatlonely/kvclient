@@ -21,7 +21,7 @@ package main
 import (
     "fmt"
 
-    "github.com/hatlonely/kvclient/pkg/cfg"
+    "github.com/hatlonely/kvclient/pkg/kvcfg"
 )
 
 // MyKey example of key
@@ -61,7 +61,7 @@ func (s *MySerializer) Unmarshal(buf []byte, val interface{}) (err error) {
 }
 
 func main() {
-    client, err := cfg.NewKVClientWithFile("example.json")
+    client, err := kvcfg.NewKVClientWithFile("example.json")
     if err != nil {
         panic(err)
     }
@@ -232,7 +232,7 @@ leveldb 读写策略详细参见 <https://github.com/syndtr/goleveldb/blob/maste
 bin/kvloader [-f configfile] [--producer.s3suffix yyymmdd]
 ```
 
-下面这个配置文件表示构造 10000 个 [kvclient.MyKey](pkg/kvclient/mykv.go)/[kvclient.MyVal](pkg/kvclient/mykv.go) 到 aerospike 中
+下面这个配置文件表示构造 10000 个 [mykv.Key](pkg/mykv/mykv.go)/[mykv.Val](pkg/mykv/mykv.go) 到 aerospike 中
 
 ``` js
 {
@@ -253,12 +253,12 @@ bin/kvloader [-f configfile] [--producer.s3suffix yyymmdd]
                 "aerospike"
             ],
             "compressor": {
-                "package": "kvclient",
-                "class": "MyCompressor"
+                "package": "mykv",
+                "class": "Compressor"
             },
             "serializer": {
-                "package": "kvclient",
-                "class": "MySerializer"
+                "package": "mykv",
+                "class": "Serializer"
             },
             "aerospike": {
                 "class": "Aerospike",
@@ -311,7 +311,7 @@ bin/kvloader [-f configfile] [--producer.s3suffix yyymmdd]
 
 ##### FakeMyKVProducer
 
-构造 [kvclient.MyKey](pkg/kvclient/mykv.go)/[kvclient.MyVal](pkg/kvclient/mykv.go) 数据
+构造 [mykv.Key](pkg/mykv/mykv.go)/[mykv.Val](pkg/mykv/mykv.go) 数据
 
 ``` js
 {
@@ -340,12 +340,12 @@ bin/kvloader [-f configfile] [--producer.s3suffix yyymmdd]
             "aerospike"
         ],
         "compressor": {
-            "package": "kvclient",
-            "class": "MyCompressor"
+            "package": "mykv",
+            "class": "Compressor"
         },
         "serializer": {
-            "package": "kvclient",
-            "class": "MySerializer"
+            "package": "mykv",
+            "class": "Serializer"
         },
         "aerospike": {
             "class": "Aerospike",
@@ -383,7 +383,7 @@ bin/kvloader [-f configfile] [--producer.s3suffix yyymmdd]
 
 ##### MyCoder
 
-My 格式数据编解码([kvclient.MyKey](pkg/kvclient/mykv.go)/[kvclient.MyVal](pkg/kvclient/mykv.go))
+My 格式数据编解码([mykv.Key](pkg/mykv/mykv.go)/[mykv.Val](pkg/mykv/mykv.go))
 
 ```
 gF7L1neVLzDsNtrZsgWQPXD5NixcRGIa+f/F    37z2rkMdbEOyIP53+ah0/YH
@@ -445,12 +445,12 @@ bin/kvbench [-f configfile]
             "aerospike"
         ],
         "compressor": {
-            "package": "kvclient",
-            "class": "MyCompressor"
+            "package": "mykv",
+            "class": "Compressor"
         },
         "serializer": {
-            "package": "kvclient",
-            "class": "MySerializer"
+            "package": "mykv",
+            "class": "Serializer"
         },
         "aerospike": {
             "class": "Aerospike",

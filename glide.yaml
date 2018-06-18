@@ -25,3 +25,5 @@ import:
 - package: github.com/bradfitz/gomemcache
   subpackages:
   - memcache
+- package: github.com/coocood/freecache
+  version: ^1.0.1

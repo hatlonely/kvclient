@@ -44,6 +44,8 @@ func TestCache_All(t *testing.T) {
 		defer levelDB.Close()
 		memcache := NewMemcacheBuilder().Build()
 		defer memcache.Close()
+		freecache := NewFreecacheBuilder().Build()
+		defer freecache.Close()
 
 		var caches []Cache
 		caches = append(caches, redisHash)
@@ -52,6 +54,7 @@ func TestCache_All(t *testing.T) {
 		caches = append(caches, levelDB)
 		caches = append(caches, memcache)
 		caches = append(caches, aerospike)
+		caches = append(caches, freecache)
 		for i, cache := range caches {
 			Convey(fmt.Sprintf("loop-%v: get a key that not exists", i), func() {
 				val, err := cache.Get("name")

@@ -1,5 +1,5 @@
-hash: b3b7b4769ed7f2c7b46172fa3472737507969a0d45849c0352825dd0ce5d0960
-updated: 2018-06-18T13:39:09.587041+08:00
+hash: ea495f0cefb1e02acc488d15ed7afbde347cce46069f4a7b85f2518c6030effe
+updated: 2018-06-18T15:05:22.4582+08:00
 imports:
 - name: github.com/aerospike/aerospike-client-go
   version: c10b5393e43bd60125aca6289c7b24879edb1787
@@ -53,6 +53,10 @@ imports:
   version: 1952afaa557dc08e8e0d89eafab110fb501c1a2b
   subpackages:
   - memcache
+- name: github.com/cespare/xxhash
+  version: 48099fad606eafc26e3a569fad19ff510fff4df6
+- name: github.com/coocood/freecache
+  version: f3233c8095b26cd0dea0b136b931708c05defa08
 - name: github.com/fsnotify/fsnotify
   version: c2828203cd70a50dcccfb2761f8b1f8ceef9a8e9
 - name: github.com/go-ini/ini

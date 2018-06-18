@@ -92,6 +92,8 @@ func main() {
 
 #### redis hash
 
+`github.com/go-redis/redis`
+
 使用 redis 的 hash 方式存储，会将 key 拆开成两部分分别作为 key 和 field，不支持 ttl，更节省内存
 
 ``` js
@@ -108,6 +110,8 @@ func main() {
 
 #### redis string
 
+`github.com/go-redis/redis`
+
 使用 redis 的 string 方式存储，支持 ttl，比较耗费内存
 
 ``` js
@@ -122,6 +126,8 @@ func main() {
 ```
 
 #### aerospike
+
+`github.com/aerospike/aerospike-client-go`
 
 使用 aerospike 存储，支持 ttl，key 以固定长度存储在内存中，value 存储在 ssd 上
 
@@ -143,6 +149,8 @@ func main() {
 
 #### memcache
 
+`github.com/bradfitz/gomemcache/memcache`
+
 memcache 客户端
 
 ``` js
@@ -157,6 +165,8 @@ memcache 客户端
 
 #### gcache 缓存
 
+`github.com/bluele/gcache`
+
 支持 ttl 的 LRU 本地内存缓存
 
 ``` js
@@ -168,6 +178,8 @@ memcache 客户端
 ```
 
 #### leveldb 缓存
+
+`github.com/syndtr/goleveldb/leveldb`
 
 leveldb 读写策略详细参见 <https://github.com/syndtr/goleveldb/blob/master/leveldb/opt/options.go>
 
@@ -183,6 +195,8 @@ leveldb 读写策略详细参见 <https://github.com/syndtr/goleveldb/blob/maste
 ```
 
 #### freecache 缓存
+
+`github.com/coocood/freecache`
 
 高性能的内存缓存，无 GC，是 gcache 的 10 倍
 

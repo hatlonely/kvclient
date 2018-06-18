@@ -143,5 +143,5 @@ func (c *Bigcache) SetNx(key string, val []byte) error {
 
 // SetExNx set with expiration if not exists. bigcache not support expiration. it use initial expiration for all keys
 func (c *Bigcache) SetExNx(key string, val []byte, expiration time.Duration) error {
-	panic("Unsupport operation SetEx")
+	panic("Unsupport operation SetExNx")
 }

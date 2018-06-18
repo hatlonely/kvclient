@@ -8,7 +8,7 @@ import (
 	. "github.com/smartystreets/goconvey/convey"
 )
 
-func TestCache_Set_Get_Del(t *testing.T) {
+func TestCache_All(t *testing.T) {
 	Convey("test data source set get and del", t, func() {
 		redisHash, err := NewRedisClusterHashBuilder().
 			WithAddress("127.0.0.1:7002").
@@ -45,66 +45,42 @@ func TestCache_Set_Get_Del(t *testing.T) {
 		memcache := NewMemcacheBuilder().Build()
 		defer memcache.Close()
 
-		for i, ds := range []Cache{redisHash, redisString, aerospike, gcache, levelDB, memcache} {
+		var caches []Cache
+		caches = append(caches, redisHash)
+		caches = append(caches, redisString)
+		caches = append(caches, gcache)
+		caches = append(caches, levelDB)
+		caches = append(caches, memcache)
+		caches = append(caches, aerospike)
+		for i, cache := range caches {
 			Convey(fmt.Sprintf("loop-%v: get a key that not exists", i), func() {
-				val, err := ds.Get("name")
+				val, err := cache.Get("name")
 				So(err, ShouldEqual, nil)
 				So(val, ShouldEqual, nil)
 			})
 
 			Convey(fmt.Sprintf("loop-%v: set a key", i), func() {
-				err := ds.Set("name", []byte("hatlonely"))
+				err := cache.Set("name", []byte("hatlonely"))
 				So(err, ShouldBeNil)
 
 				Convey(fmt.Sprintf("loop-%v: then get the key", i), func() {
-					val, err := ds.Get("name")
+					val, err := cache.Get("name")
 					So(err, ShouldBeNil)
 					So(val, ShouldResemble, []byte("hatlonely"))
 				})
 
 				Convey(fmt.Sprintf("loop-%v: del the key", i), func() {
-					err := ds.Del("name")
+					err := cache.Del("name")
 					So(err, ShouldBeNil)
 
 					Convey(fmt.Sprintf("loop-%v: get the key again，it's not exists", i), func() {
-						val, err := ds.Get("name")
+						val, err := cache.Get("name")
 						So(err, ShouldEqual, nil)
 						So(val, ShouldEqual, nil)
 					})
 				})
 			})
-		}
-	})
-}
 
-func TestCache_SetBatch(t *testing.T) {
-	Convey("test data source set batch", t, func() {
-		redisHash, err := NewRedisClusterHashBuilder().
-			WithAddress("127.0.0.1:7002").
-			WithRetries(3).
-			WithTimeout(time.Duration(240) * time.Millisecond).
-			WithPoolSize(15).
-			Build()
-		So(err, ShouldBeNil)
-		redisString, err := NewRedisClusterStringBuilder().
-			WithAddress("127.0.0.1:7002").
-			WithRetries(3).
-			WithTimeout(time.Duration(240) * time.Millisecond).
-			WithPoolSize(15).
-			Build()
-		So(err, ShouldBeNil)
-		aerospike, err := NewAerospikeBuilder().
-			WithAddress("127.0.0.1:3000").
-			WithNamespace("dmp").
-			WithSetName("dsp").
-			WithTimeout(time.Duration(200) * time.Millisecond).
-			WithRetries(4).
-			WithExpiration(time.Duration(200) * time.Second).
-			Build()
-		So(err, ShouldBeNil)
-		gcache := NewGLocalCacheBuilder().Build()
-
-		for i, ds := range []Cache{redisHash, redisString, aerospike, gcache} {
 			Convey(fmt.Sprintf("loop-%v: set batch", i), func() {
 				kvs := []*struct {
 					Key string
@@ -117,7 +93,7 @@ func TestCache_SetBatch(t *testing.T) {
 				}
 				keys := []string{"key1", "key2", "key3"}
 				vals := [][]byte{[]byte("val1"), []byte("val2"), []byte("val3")}
-				errs, err := ds.SetBatch(keys, vals)
+				errs, err := cache.SetBatch(keys, vals)
 				So(err, ShouldBeNil)
 				So(errs[0], ShouldBeNil)
 				So(errs[1], ShouldBeNil)
@@ -127,15 +103,15 @@ func TestCache_SetBatch(t *testing.T) {
 				So(kvs[2].Err, ShouldEqual, nil)
 
 				Convey(fmt.Sprintf("loop-%v: then get the keys", i), func() {
-					val, err := ds.Get("key1")
+					val, err := cache.Get("key1")
 					So(err, ShouldBeNil)
 					So(val, ShouldResemble, []byte("val1"))
 
-					val, err = ds.Get("key2")
+					val, err = cache.Get("key2")
 					So(err, ShouldBeNil)
 					So(val, ShouldResemble, []byte("val2"))
 
-					val, err = ds.Get("key3")
+					val, err = cache.Get("key3")
 					So(err, ShouldBeNil)
 					So(val, ShouldResemble, []byte("val3"))
 				})
@@ -143,7 +119,7 @@ func TestCache_SetBatch(t *testing.T) {
 
 			Convey(fmt.Sprintf("loop-%v: del those keys", i), func() {
 				for _, key := range []string{"key1", "key2", "key3"} {
-					err := ds.Del(key)
+					err := cache.Del(key)
 					So(err, ShouldBeNil)
 				}
 			})

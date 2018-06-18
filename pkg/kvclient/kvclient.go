@@ -95,20 +95,20 @@ func (c *kvClient) Get(key interface{}, val interface{}) (bool, error) {
 	for i, cache := range c.caches {
 		buf, err := cache.Get(keybuf)
 		atomic.AddInt64(&(c.getTimes[i]), 1)
+		if err == ErrNotFound {
+			continue
+		}
 		if err != nil {
 			return false, err
 		}
-
 		if buf != nil {
 			atomic.AddInt64(&(c.hitTimes[i]), 1)
 			if err := c.serializer.Unmarshal(buf, val); err != nil {
 				return false, err
 			}
-
 			for j := 0; j < i; j++ {
 				c.caches[j].Set(keybuf, buf)
 			}
-
 			return true, nil
 		}
 	}

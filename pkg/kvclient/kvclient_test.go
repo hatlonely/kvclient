@@ -27,6 +27,5 @@ func TestKVClient_All(t *testing.T) {
 		So(ok, ShouldBeTrue)
 		So(err, ShouldBeNil)
 		So(val.Message, ShouldEqual, "val")
-		So(client.CacheHitRate(), ShouldResemble, 1)
 	})
 }

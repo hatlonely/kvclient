@@ -135,7 +135,7 @@ func (as *Aerospike) Get(key string) ([]byte, error) {
 			return buf, nil
 		}
 	}
-	return nil, nil
+	return nil, ErrNotFound
 }
 
 // Set a key

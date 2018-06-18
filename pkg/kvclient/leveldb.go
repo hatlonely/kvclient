@@ -98,7 +98,7 @@ func (l *LevelDB) Close() error {
 func (l *LevelDB) Get(key string) ([]byte, error) {
 	val, err := l.db.Get([]byte(key), l.roptions)
 	if err == leveldb.ErrNotFound {
-		return nil, nil
+		return nil, ErrNotFound
 	}
 	if err != nil {
 		return nil, err

@@ -63,7 +63,7 @@ func TestCache_All(t *testing.T) {
 		for i, cache := range caches {
 			Convey(fmt.Sprintf("loop-%v: get a key that not exists", i), func() {
 				val, err := cache.Get("name")
-				So(err, ShouldEqual, nil)
+				So(err, ShouldEqual, ErrNotFound)
 				So(val, ShouldEqual, nil)
 			})
 
@@ -83,7 +83,7 @@ func TestCache_All(t *testing.T) {
 
 					Convey(fmt.Sprintf("loop-%v: get the key again，it's not exists", i), func() {
 						val, err := cache.Get("name")
-						So(err, ShouldEqual, nil)
+						So(err, ShouldEqual, ErrNotFound)
 						So(val, ShouldEqual, nil)
 					})
 				})

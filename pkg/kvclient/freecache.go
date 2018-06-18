@@ -57,7 +57,7 @@ func (c *Freecache) Close() error {
 func (c *Freecache) Get(key string) ([]byte, error) {
 	val, err := c.cache.Get([]byte(key))
 	if err == freecache.ErrNotFound {
-		return nil, nil
+		return nil, ErrNotFound
 	}
 	if err != nil {
 		return nil, err

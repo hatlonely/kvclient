@@ -1,8 +1,12 @@
 package kvclient
 
 import (
+	"errors"
 	"time"
 )
+
+// ErrNotFound error
+var ErrNotFound = errors.New("key not found")
 
 // Compressor compress key
 type Compressor interface {
@@ -32,7 +36,7 @@ type KVClient interface {
 
 // Cache interface
 type Cache interface {
-	Get(key string) ([]byte, error)   // return nil, nil if key not found
+	Get(key string) ([]byte, error)   // return nil, ErrNotFound if key not found
 	Set(key string, val []byte) error // key will expire with default configuration
 	Del(key string) error
 	SetBatch(keys []string, vals [][]byte) ([]error, error)

@@ -83,7 +83,7 @@ func (c *Bigcache) Get(key string) ([]byte, error) {
 	if err != nil {
 		switch err.(type) {
 		case *bigcache.EntryNotFoundError:
-			return nil, nil
+			return nil, ErrNotFound
 		}
 		return nil, err
 	}

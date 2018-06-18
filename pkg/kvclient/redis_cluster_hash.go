@@ -99,9 +99,12 @@ func (rc *RedisClusterHash) Get(key string) ([]byte, error) {
 	k, f := rc.parseKey(key)
 	val, err := rc.client.HGet(k, f).Result()
 	if err == redis.Nil {
-		return nil, nil
+		return nil, ErrNotFound
 	}
-	return []byte(val), err
+	if err != nil {
+		return nil, err
+	}
+	return []byte(val), nil
 }
 
 // Set set a key

@@ -9,7 +9,7 @@ import (
 )
 
 func TestCache_All(t *testing.T) {
-	Convey("test data source set get and del", t, func() {
+	Convey("test cache all", t, func() {
 		redisHash, err := NewRedisClusterHashBuilder().
 			WithAddress("127.0.0.1:7002").
 			WithRetries(3).
@@ -90,15 +90,6 @@ func TestCache_All(t *testing.T) {
 			})
 
 			Convey(fmt.Sprintf("loop-%v: set batch", i), func() {
-				kvs := []*struct {
-					Key string
-					Val []byte
-					Err error
-				}{
-					{"key1", []byte("val1"), nil},
-					{"key2", []byte("val2"), nil},
-					{"key3", []byte("val3"), nil},
-				}
 				keys := []string{"key1", "key2", "key3"}
 				vals := [][]byte{[]byte("val1"), []byte("val2"), []byte("val3")}
 				errs, err := cache.SetBatch(keys, vals)
@@ -106,9 +97,6 @@ func TestCache_All(t *testing.T) {
 				So(errs[0], ShouldBeNil)
 				So(errs[1], ShouldBeNil)
 				So(errs[2], ShouldBeNil)
-				So(kvs[0].Err, ShouldEqual, nil)
-				So(kvs[1].Err, ShouldEqual, nil)
-				So(kvs[2].Err, ShouldEqual, nil)
 
 				Convey(fmt.Sprintf("loop-%v: then get the keys", i), func() {
 					val, err := cache.Get("key1")

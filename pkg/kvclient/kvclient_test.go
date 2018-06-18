@@ -10,10 +10,11 @@ import (
 
 func TestKVClient_All(t *testing.T) {
 	Convey("kvclient test", t, func() {
-		redis, err := NewRedisClusterStringBuilder().WithExpiration(time.Duration(20) * time.Second).Build()
+		freecache := NewFreecacheBuilder().Build()
+		redis, err := NewRedisClusterStringBuilder().WithExpiration(time.Duration(120) * time.Second).Build()
 		So(err, ShouldBeNil)
 		client := NewBuilder().
-			WithCaches([]Cache{redis}).
+			WithCaches([]Cache{freecache, redis}).
 			WithCompressor(&mykv.Compressor{}).
 			WithSerializer(&mykv.Serializer{}).
 			Build()
@@ -26,5 +27,6 @@ func TestKVClient_All(t *testing.T) {
 		So(ok, ShouldBeTrue)
 		So(err, ShouldBeNil)
 		So(val.Message, ShouldEqual, "val")
+		So(client.CacheHitRate(), ShouldResemble, 1)
 	})
 }

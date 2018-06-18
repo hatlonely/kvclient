@@ -11,8 +11,8 @@ type Compressor interface {
 
 // Serializer serialize val
 type Serializer interface {
-	Marshal(val interface{}) (buf []byte, err error)
-	Unmarshal(buf []byte, val interface{}) (err error)
+	Marshal(val interface{}) ([]byte, error)
+	Unmarshal(buf []byte, val interface{}) error
 }
 
 // KVClient client for kv storage
@@ -27,6 +27,7 @@ type KVClient interface {
 	SetNx(key interface{}, val interface{}) error                             // set if not exists
 	SetExNx(key interface{}, val interface{}, expiration time.Duration) error // set if not exists with expiration
 	Close() error
+	CacheHitRate() []float64
 }
 
 // Cache interface

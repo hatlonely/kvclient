@@ -55,6 +55,7 @@ func (b *BigcacheBuilder) Build() (*Bigcache, error) {
 	option.Shards = b.Shards
 	option.MaxEntriesInWindow = b.MemBytes
 	option.MaxEntrySize = b.Size
+	option.HardMaxCacheSize = b.Size
 	cache, err := bigcache.NewBigCache(option)
 
 	if err != nil {

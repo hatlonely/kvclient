@@ -140,6 +140,12 @@ func NewCache(config *viper.Viper) (kvclient.Cache, error) {
 			return nil, err
 		}
 		return builder.Build(), nil
+	} else if c == "Bigcache" {
+		builder := kvclient.NewBigcacheBuilder()
+		if err := config.Unmarshal(builder); err != nil {
+			return nil, err
+		}
+		return builder.Build()
 	}
 
 	return nil, fmt.Errorf("no cache named [%v]", c)

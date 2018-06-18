@@ -39,6 +39,7 @@ func TestCache_All(t *testing.T) {
 		So(err, ShouldBeNil)
 		defer aerospike.Close()
 		gcache := NewGcacheBuilder().Build()
+		defer gcache.Close()
 		levelDB, err := NewLevelDBBuilder().Build()
 		So(err, ShouldBeNil)
 		defer levelDB.Close()
@@ -46,6 +47,9 @@ func TestCache_All(t *testing.T) {
 		defer memcache.Close()
 		freecache := NewFreecacheBuilder().Build()
 		defer freecache.Close()
+		bigcache, err := NewBigcacheBuilder().Build()
+		So(err, ShouldBeNil)
+		defer bigcache.Close()
 
 		var caches []Cache
 		caches = append(caches, redisHash)
@@ -55,6 +59,7 @@ func TestCache_All(t *testing.T) {
 		caches = append(caches, memcache)
 		caches = append(caches, aerospike)
 		caches = append(caches, freecache)
+		caches = append(caches, bigcache)
 		for i, cache := range caches {
 			Convey(fmt.Sprintf("loop-%v: get a key that not exists", i), func() {
 				val, err := cache.Get("name")

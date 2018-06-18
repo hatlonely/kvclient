@@ -1,0 +1,62 @@
+{
+    "producer": {
+        "class": "FileKVProducer",
+        "directory": "../kvloader/data",
+        "threadNum": 10,
+        "verbose": true,
+        "coder": {
+            "class": "MyKVCoder"
+        }
+    },
+    "timeDistributionThreshold": [
+        "300us",
+        "500us",
+        "800us",
+        "1ms",
+        "2ms",
+        "5ms"
+    ],
+    "schedule": [
+        {
+            "readerNum": 0,
+            "writerNum": 8,
+            "startPercent": 0,
+            "endPercent": 25,
+            "times": 1
+        },
+        {
+            "readerNum": 8,
+            "writerNum": 0,
+            "startPercent": 25,
+            "endPercent": 50,
+            "times": 1
+        },
+        {
+            "readerNum": 30,
+            "writerNum": 0,
+            "startPercent": 50,
+            "endPercent": 100,
+            "times": 10
+        }
+    ],
+    "kvclient": {
+        "caches": [
+            "bigcache"
+        ],
+        "compressor": {
+            "package": "mykv",
+            "class": "Compressor"
+        },
+        "serializer": {
+            "package": "mykv",
+            "class": "Serializer"
+        },
+        "bigcache": {
+            "class": "Bigcache",
+            "shards": 1024,
+            "expiration": "15m",
+            "memBytes": 10000000,
+            "size": 500
+        }
+    }
+}

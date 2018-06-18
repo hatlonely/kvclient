@@ -1,5 +1,5 @@
-hash: ea495f0cefb1e02acc488d15ed7afbde347cce46069f4a7b85f2518c6030effe
-updated: 2018-06-18T15:05:22.4582+08:00
+hash: 6c1a459e5314e641aabf596a067ddd5877b03dc78373caee97f61ebfbe7df00a
+updated: 2018-06-18T17:18:30.33272+08:00
 imports:
 - name: github.com/aerospike/aerospike-client-go
   version: c10b5393e43bd60125aca6289c7b24879edb1787
@@ -14,6 +14,8 @@ imports:
   - types/particle_type
   - types/rand
   - utils/buffer
+- name: github.com/allegro/bigcache
+  version: f31987a23e44c5121ef8c8b2f2ea2e8ffa37b068
 - name: github.com/aws/aws-sdk-go
   version: bfc1a07cf158c30c41a3eefba8aae043d0bb5bff
   subpackages:

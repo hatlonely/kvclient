@@ -208,6 +208,20 @@ leveldb 读写策略详细参见 <https://github.com/syndtr/goleveldb/blob/maste
 }
 ```
 
+#### bigcache 缓存
+
+`github.com/allegro/bigcache`
+
+``` js
+{
+    "class": "Bigcache",
+    "shards": 1024,
+    "expiration": "15m",
+    "memBytes": 10000000,
+    "size": 500
+}
+```
+
 ### 数据加载
 
 数据加载模块用于数据更新，数据构造，性能测试等，支持从本地文件，s3目录，或者构造数据到数据源或者文件中

@@ -88,7 +88,7 @@ func (c *kvClient) CacheHitRate() []float64 {
 	return rate
 }
 
-// Get get a key
+// Get key
 func (c *kvClient) Get(key interface{}, val interface{}) (bool, error) {
 	keybuf := c.compressor.Compress(key)
 
@@ -116,7 +116,7 @@ func (c *kvClient) Get(key interface{}, val interface{}) (bool, error) {
 	return false, nil
 }
 
-// Set set a key
+// Set key
 func (c *kvClient) Set(key interface{}, val interface{}) error {
 	keybuf := c.compressor.Compress(key)
 	valbuf, err := c.serializer.Marshal(val)
@@ -134,7 +134,7 @@ func (c *kvClient) Set(key interface{}, val interface{}) error {
 	return err
 }
 
-// Del remove a key
+// Del key
 func (c *kvClient) Del(key interface{}) error {
 	keybuf := c.compressor.Compress(key)
 
@@ -148,6 +148,7 @@ func (c *kvClient) Del(key interface{}) error {
 	return err
 }
 
+// SetEx set with expiration
 func (c *kvClient) SetEx(key interface{}, val interface{}, expiration time.Duration) error {
 	keybuf := c.compressor.Compress(key)
 	valbuf, err := c.serializer.Marshal(val)
@@ -165,6 +166,7 @@ func (c *kvClient) SetEx(key interface{}, val interface{}, expiration time.Durat
 	return err
 }
 
+// SetNx set if not exist
 func (c *kvClient) SetNx(key interface{}, val interface{}) error {
 	keybuf := c.compressor.Compress(key)
 	valbuf, err := c.serializer.Marshal(val)
@@ -182,6 +184,7 @@ func (c *kvClient) SetNx(key interface{}, val interface{}) error {
 	return err
 }
 
+// SetExNx set with expiration if not exist
 func (c *kvClient) SetExNx(key interface{}, val interface{}, expiration time.Duration) error {
 	keybuf := c.compressor.Compress(key)
 	valbuf, err := c.serializer.Marshal(val)

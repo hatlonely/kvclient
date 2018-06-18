@@ -8,13 +8,6 @@ import (
 	. "github.com/smartystreets/goconvey/convey"
 )
 
-type dsInterface interface {
-	Set(key string, val []byte) (err error)
-	Get(key string) (val []byte, err error) // return nil, nil if key not found
-	Del(key string) (err error)
-	SetBatch(keys []string, vals [][]byte) (errs []error, err error)
-}
-
 func TestCache_Set_Get_Del(t *testing.T) {
 	Convey("test data source set get and del", t, func() {
 		redisHash, err := NewRedisClusterHashBuilder().
@@ -49,8 +42,10 @@ func TestCache_Set_Get_Del(t *testing.T) {
 		levelDB, err := NewLevelDBBuilder().Build()
 		So(err, ShouldBeNil)
 		defer levelDB.Close()
+		memcache := NewMemcacheBuilder().Build()
+		defer memcache.Close()
 
-		for i, ds := range []dsInterface{redisHash, redisString, aerospike, gcache, levelDB} {
+		for i, ds := range []Cache{redisHash, redisString, aerospike, gcache, levelDB, memcache} {
 			Convey(fmt.Sprintf("loop-%v: get a key that not exists", i), func() {
 				val, err := ds.Get("name")
 				So(err, ShouldEqual, nil)
@@ -109,7 +104,7 @@ func TestCache_SetBatch(t *testing.T) {
 		So(err, ShouldBeNil)
 		gcache := NewGLocalCacheBuilder().Build()
 
-		for i, ds := range []dsInterface{redisHash, redisString, aerospike, gcache} {
+		for i, ds := range []Cache{redisHash, redisString, aerospike, gcache} {
 			Convey(fmt.Sprintf("loop-%v: set batch", i), func() {
 				kvs := []*struct {
 					Key string

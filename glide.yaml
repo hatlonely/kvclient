@@ -22,3 +22,6 @@ import:
 - package: github.com/syndtr/goleveldb
   subpackages:
   - leveldb
+- package: github.com/bradfitz/gomemcache
+  subpackages:
+  - memcache

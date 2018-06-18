@@ -153,6 +153,21 @@ func main() {
 }
 ```
 
+#### leveldb 缓存
+
+leveldb 读写策略详细参见 <https://github.com/syndtr/goleveldb/blob/master/leveldb/opt/options.go>
+
+``` js
+{
+    "class": "LevelDB",
+    "directory": "leveldb",     // leveldb 缓存目录
+    "dontFillCache": false,     // 读数据是否缓存到内存
+    "strict": 0,                // 读数据策略
+    "noWriteMerge": false,      // 写数据策略
+    "sync": false               // 写数据，数据 sync 到磁盘
+}
+```
+
 ### 数据加载
 
 数据加载模块用于数据更新，数据构造，性能测试等，支持从本地文件，s3目录，或者构造数据到数据源或者文件中

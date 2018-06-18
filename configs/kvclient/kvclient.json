@@ -4,12 +4,12 @@
         "aerospike"
     ],
     "compressor": {
-        "package": "kvclient",
-        "class": "MyCompressor"
+        "package": "mykv",
+        "class": "Compressor"
     },
     "serializer": {
-        "package": "kvclient",
-        "class": "MySerializer"
+        "package": "mykv",
+        "class": "Serializer"
     },
     "gcache": {
         "class": "GLocalCache",

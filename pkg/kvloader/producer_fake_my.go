@@ -5,7 +5,7 @@ import (
 	"math/rand"
 	"sync"
 
-	"github.com/hatlonely/kvclient/pkg/kvclient"
+	"github.com/hatlonely/kvclient/pkg/mykv"
 )
 
 // NewFakeMyKVProducerBuilder create a new FakeMyKVProducerBuilder
@@ -95,8 +95,8 @@ func (p *FakeMyKVProducer) Produce(wg *sync.WaitGroup, infoChan chan<- *KVInfo) 
 // Fake a my info
 func (p *FakeMyKVProducer) Fake() *KVInfo {
 	return &KVInfo{
-		Key: &kvclient.MyKey{Message: p.RandBytes(p.keyLen)},
-		Val: &kvclient.MyVal{Message: p.RandBytes(p.valLen)},
+		Key: &mykv.Key{Message: p.RandBytes(p.keyLen)},
+		Val: &mykv.Val{Message: p.RandBytes(p.valLen)},
 	}
 }
 

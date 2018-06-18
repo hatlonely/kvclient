@@ -16,12 +16,12 @@
                 "aerospike"
             ],
             "compressor": {
-                "package": "kvclient",
-                "class": "OriginCompressor"
+                "package": "mykv",
+                "class": "Compressor"
             },
             "serializer": {
-                "package": "kvclient",
-                "class": "ProtoSerializer"
+                "package": "mykv",
+                "class": "Serializer"
             },
             "aerospike": {
                 "class": "Aerospike",

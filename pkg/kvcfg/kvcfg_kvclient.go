@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/hatlonely/kvclient/pkg/kvclient"
+	"github.com/hatlonely/kvclient/pkg/mykv"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 )
@@ -136,9 +137,9 @@ func NewCache(config *viper.Viper) (kvclient.Cache, error) {
 func NewCompressor(config *viper.Viper) (kvclient.Compressor, error) {
 	c := config.GetString("class")
 	pkg := config.GetString("package")
-	if pkg == "kvclient" {
-		if c == "MyCompressor" {
-			return &kvclient.MyCompressor{}, nil
+	if pkg == "mykv" {
+		if c == "Compressor" {
+			return &mykv.Compressor{}, nil
 		}
 	}
 	return nil, fmt.Errorf("no compressor named %v", c)
@@ -148,9 +149,9 @@ func NewCompressor(config *viper.Viper) (kvclient.Compressor, error) {
 func NewSerializer(config *viper.Viper) (kvclient.Serializer, error) {
 	c := config.GetString("class")
 	pkg := config.GetString("package")
-	if pkg == "kvclient" {
-		if c == "MySerializer" {
-			return &kvclient.MySerializer{}, nil
+	if pkg == "mykv" {
+		if c == "Serializer" {
+			return &mykv.Serializer{}, nil
 		}
 	}
 	return nil, fmt.Errorf("no serializer named %v", c)

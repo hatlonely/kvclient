@@ -38,7 +38,7 @@ func TestCache_All(t *testing.T) {
 			Build()
 		So(err, ShouldBeNil)
 		defer aerospike.Close()
-		gcache := NewGLocalCacheBuilder().Build()
+		gcache := NewGcacheBuilder().Build()
 		levelDB, err := NewLevelDBBuilder().Build()
 		So(err, ShouldBeNil)
 		defer levelDB.Close()

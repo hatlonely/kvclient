@@ -7,56 +7,56 @@ import (
 	"github.com/bluele/gcache"
 )
 
-// NewGLocalCacheBuilder create a new local cache builder
-func NewGLocalCacheBuilder() *GLocalCacheBuilder {
-	return &GLocalCacheBuilder{
+// NewGcacheBuilder create a new local cache builder
+func NewGcacheBuilder() *GcacheBuilder {
+	return &GcacheBuilder{
 		Size:       4000,
 		Expiration: time.Duration(15) * time.Minute,
 	}
 }
 
-// GLocalCacheBuilder glocalcache builder
-type GLocalCacheBuilder struct {
+// GcacheBuilder Gcache builder
+type GcacheBuilder struct {
 	Size       int
 	Expiration time.Duration
 }
 
 // Build build a new local cache
-func (b *GLocalCacheBuilder) Build() *GLocalCache {
-	return &GLocalCache{
+func (b *GcacheBuilder) Build() *Gcache {
+	return &Gcache{
 		cache: gcache.New(b.Size).LRU().Expiration(b.Expiration).Build(),
 	}
 }
 
 // WithSize set size
-func (b *GLocalCacheBuilder) WithSize(size int) *GLocalCacheBuilder {
+func (b *GcacheBuilder) WithSize(size int) *GcacheBuilder {
 	b.Size = size
 	return b
 }
 
 // WithExpiration set expire time
-func (b *GLocalCacheBuilder) WithExpiration(expiration time.Duration) *GLocalCacheBuilder {
+func (b *GcacheBuilder) WithExpiration(expiration time.Duration) *GcacheBuilder {
 	b.Expiration = expiration
 	return b
 }
 
-// GLocalCache localcache implementation with `github.com/bluele/gcache`
-type GLocalCache struct {
+// Gcache localcache implementation with `github.com/bluele/gcache`
+type Gcache struct {
 	cache gcache.Cache
 }
 
 // Close cache. nothing to do
-func (lc *GLocalCache) Close() error {
+func (lc *Gcache) Close() error {
 	return nil
 }
 
 // Set set a key
-func (lc *GLocalCache) Set(key string, val []byte) error {
+func (lc *Gcache) Set(key string, val []byte) error {
 	return lc.cache.Set(key, val)
 }
 
 // Get get a key
-func (lc *GLocalCache) Get(key string) ([]byte, error) {
+func (lc *Gcache) Get(key string) ([]byte, error) {
 	val, err := lc.cache.Get(key)
 	if err == gcache.KeyNotFoundError {
 		return nil, nil
@@ -70,18 +70,18 @@ func (lc *GLocalCache) Get(key string) ([]byte, error) {
 }
 
 // Del delete a key
-func (lc *GLocalCache) Del(key string) error {
+func (lc *Gcache) Del(key string) error {
 	lc.cache.Remove(key)
 	return nil
 }
 
 // SetEx set with expiration
-func (lc *GLocalCache) SetEx(key string, val []byte, expiration time.Duration) error {
+func (lc *Gcache) SetEx(key string, val []byte, expiration time.Duration) error {
 	return lc.cache.SetWithExpire(key, val, expiration)
 }
 
 // SetNx set if not exists
-func (lc *GLocalCache) SetNx(key string, val []byte) error {
+func (lc *Gcache) SetNx(key string, val []byte) error {
 	val, err := lc.Get(key)
 	if err != nil {
 		return err
@@ -95,7 +95,7 @@ func (lc *GLocalCache) SetNx(key string, val []byte) error {
 }
 
 // SetExNx set if not exists with expiration
-func (lc *GLocalCache) SetExNx(key string, val []byte, expiration time.Duration) error {
+func (lc *Gcache) SetExNx(key string, val []byte, expiration time.Duration) error {
 	val, err := lc.Get(key)
 	if err != nil {
 		return err
@@ -109,7 +109,7 @@ func (lc *GLocalCache) SetExNx(key string, val []byte, expiration time.Duration)
 }
 
 // SetBatch keys vals
-func (lc *GLocalCache) SetBatch(keys []string, vals [][]byte) ([]error, error) {
+func (lc *Gcache) SetBatch(keys []string, vals [][]byte) ([]error, error) {
 	if len(keys) != len(vals) {
 		return nil, fmt.Errorf("assert len(keys)[%v] == len(vals)[%v] failed", len(keys), len(vals))
 	}

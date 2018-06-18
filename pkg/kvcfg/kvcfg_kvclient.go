@@ -111,13 +111,13 @@ func NewCache(config *viper.Viper) (kvclient.Cache, error) {
 			return nil, err
 		}
 		return builder.Build()
-	} else if c == "GLocalCache" {
+	} else if c == "Gcache" {
 		// {
 		//     "class": "GLocalCache",
 		//     "size": 2000,
 		//     "expiration": "15m"
 		// }
-		builder := kvclient.NewGLocalCacheBuilder()
+		builder := kvclient.NewGcacheBuilder()
 		if err := config.Unmarshal(builder); err != nil {
 			return nil, err
 		}

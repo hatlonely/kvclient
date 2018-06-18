@@ -52,7 +52,7 @@
             "class": "Serializer"
         },
         "gcache": {
-            "class": "GLocalCache",
+            "class": "Gcache",
             "size": 1000000,
             "expiration": "15m"
         }

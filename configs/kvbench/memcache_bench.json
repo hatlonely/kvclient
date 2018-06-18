@@ -53,11 +53,10 @@
         },
         "memcache": {
             "class": "Memcache",
-            "directory": "leveldb",
-            "dontFillCache": false,
-            "strict": 0,
-            "noWriteMerge": false,
-            "sync": false
+            "address": "127.0.0.1:11211",
+            "expiration": "2h",
+            "poolSize": 20,
+            "timeout": "1s"
         }
     }
 }

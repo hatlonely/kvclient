@@ -141,13 +141,27 @@ func main() {
 }
 ```
 
+#### memcache
+
+memcache 客户端
+
+``` js
+{
+    "class": "Memcache",
+    "address": "127.0.0.1:11211",
+    "expiration": "2h",
+    "poolSize": 20,
+    "timeout": "1s"
+}
+```
+
 #### gcache 缓存
 
 支持 ttl 的 LRU 本地内存缓存
 
 ``` js
 {
-    "class": "GLocalCache",
+    "class": "Gcache",
     "size": 2000,               // 缓存最大的容量
     "expiration": "15m"         // 过期时间
 }
@@ -165,6 +179,18 @@ leveldb 读写策略详细参见 <https://github.com/syndtr/goleveldb/blob/maste
     "strict": 0,                // 读数据策略
     "noWriteMerge": false,      // 写数据策略
     "sync": false               // 写数据，数据 sync 到磁盘
+}
+```
+
+#### freecache 缓存
+
+高性能的内存缓存，无 GC，是 gcache 的 10 倍
+
+``` js
+{
+    "class": "Freecache",
+    "memBytes": 10000000,   // 内存大小
+    "expiration": "15m"     // 过期时间
 }
 ```
 

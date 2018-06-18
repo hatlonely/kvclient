@@ -59,7 +59,7 @@ func (lc *Gcache) Set(key string, val []byte) error {
 func (lc *Gcache) Get(key string) ([]byte, error) {
 	val, err := lc.cache.Get(key)
 	if err == gcache.KeyNotFoundError {
-		return nil, ErrNotFound
+		return nil, nil
 	}
 
 	if err != nil {

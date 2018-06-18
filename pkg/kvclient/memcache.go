@@ -74,7 +74,7 @@ func (m *Memcache) Close() error {
 func (m *Memcache) Get(key string) (val []byte, err error) {
 	item, err := m.client.Get(key)
 	if err == memcache.ErrCacheMiss {
-		return nil, ErrNotFound
+		return nil, nil
 	}
 	if err != nil {
 		return nil, err

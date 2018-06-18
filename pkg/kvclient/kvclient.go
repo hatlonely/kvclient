@@ -1,6 +1,7 @@
 package kvclient
 
 import (
+	"bytes"
 	"fmt"
 	"sync/atomic"
 	"time"
@@ -44,6 +45,7 @@ func (b *Builder) Build() KVClient {
 		hitTimes:   make([]int64, len(b.caches)),
 		compressor: b.compressor,
 		serializer: b.serializer,
+		nilValBuf:  []byte{},
 	}
 }
 
@@ -54,6 +56,7 @@ type kvClient struct {
 	hitTimes   []int64
 	compressor Compressor
 	serializer Serializer
+	nilValBuf  []byte
 }
 
 // Close caches
@@ -78,6 +81,11 @@ func (c *kvClient) SetSerializer(serializer Serializer) {
 	c.serializer = serializer
 }
 
+// SetNilValBuf set nilValBuf
+func (c *kvClient) SetNilValBuf(buf []byte) {
+	c.nilValBuf = buf
+}
+
 // CacheHitRate cache hit rate
 func (c *kvClient) CacheHitRate() []float64 {
 	var rate []float64
@@ -92,28 +100,43 @@ func (c *kvClient) CacheHitRate() []float64 {
 func (c *kvClient) Get(key interface{}, val interface{}) (bool, error) {
 	keybuf := c.compressor.Compress(key)
 
+	var ok bool
+	var err error
+	var buf []byte
+	var idx int
 	for i, cache := range c.caches {
-		buf, err := cache.Get(keybuf)
+		idx = i
+		buf, err = cache.Get(keybuf)
 		atomic.AddInt64(&(c.getTimes[i]), 1)
-		if err == ErrNotFound {
-			continue
-		}
 		if err != nil {
 			return false, err
 		}
 		if buf != nil {
+			if bytes.Equal(buf, c.nilValBuf) {
+				ok = false
+				break
+			}
+
 			atomic.AddInt64(&(c.hitTimes[i]), 1)
-			if err := c.serializer.Unmarshal(buf, val); err != nil {
+			if err = c.serializer.Unmarshal(buf, val); err != nil {
 				return false, err
 			}
-			for j := 0; j < i; j++ {
-				c.caches[j].Set(keybuf, buf)
-			}
-			return true, nil
+			ok = true
+			break
 		}
 	}
 
-	return false, nil
+	if ok {
+		for i := 0; i < idx; i++ {
+			c.caches[i].Set(keybuf, buf)
+		}
+	} else {
+		for i := 0; i < idx; i++ {
+			c.caches[i].Set(keybuf, c.nilValBuf)
+		}
+	}
+
+	return ok, nil
 }
 
 // Set key

@@ -92,7 +92,7 @@ func (rc *RedisClusterString) Close() error {
 func (rc *RedisClusterString) Get(key string) ([]byte, error) {
 	val, err := rc.client.Get(key).Result()
 	if err == redis.Nil {
-		return nil, ErrNotFound
+		return nil, nil
 	}
 	if err != nil {
 		return nil, err

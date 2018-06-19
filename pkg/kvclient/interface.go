@@ -19,7 +19,9 @@ type Serializer interface {
 type KVClient interface {
 	SetCompressor(compressor Compressor)
 	SetSerializer(serializer Serializer)
-	SetNilValBuf(buf []byte)                            // nilValBuf used for cache. if a key set NilValBuf as val, the key will take as not found
+	// nilValBuf used when we need set a key which has a nil value for local caches
+	// if a key set NilValBuf as val, the key will take as not found
+	SetNilValBuf(buf []byte)
 	Get(key interface{}, val interface{}) (bool, error) // return false if key not found
 	Set(key interface{}, val interface{}) error         // key will expire with default configuration
 	Del(key interface{}) error
@@ -33,8 +35,11 @@ type KVClient interface {
 
 // Cache interface
 type Cache interface {
-	Get(key string) ([]byte, error)   // return nil, nil if key not found
-	Set(key string, val []byte) error // key will expire with default configuration
+	Get(key string) ([]byte, error) // return nil, nil if key not found
+	// do not use nil as key or val. because nil val is not support for remote caches
+	// if necessary, consider `[]` instead
+	// key will expire with default configuration
+	Set(key string, val []byte) error
 	Del(key string) error
 	SetBatch(keys []string, vals [][]byte) ([]error, error)
 	SetEx(key string, val []byte, expiration time.Duration) error   // set with expiration

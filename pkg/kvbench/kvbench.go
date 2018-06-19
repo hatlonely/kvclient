@@ -100,7 +100,7 @@ func (b *KVBenchmarker) Benchmark() error {
 	for i := range b.timeDistributionThreshold {
 		timeDisArrayStr[i] = fmt.Sprintf("%v", b.timeDistributionThreshold[i])
 	}
-	fmt.Printf("\t\t%v\t%v\t%v\t%v\t%v\t%v\t%v\n", "succ", "fail", "totalTime", "qps", "res_time", strings.Join(timeDisArrayStr, "\t"), `succ%`)
+	fmt.Printf("\t\t%v\t%v\t%v\t% 8v\t% 8v\t% 8v\t%v\n", "succ", "fail", "totalTime", "qps", "res_time", strings.Join(timeDisArrayStr, "\t"), `succ%`)
 	l := len(mem.Infos)
 	for _, item := range b.schedule {
 		if item.Times <= 0 {
@@ -236,7 +236,7 @@ func (k *KPI) Show() string {
 	}
 
 	return fmt.Sprintf(
-		"%v\t%v\t%v\t%v\t%v\t%v\t%v\t%v",
+		"%v\t%v\t%v\t% 8v\t% 8v\t% 8v\t%v\t%v",
 		k.option, k.success, k.fail, k.totalTime,
 		k.success*int(time.Second)*k.count/int(k.totalTime),
 		k.totalTime/time.Duration(k.success),

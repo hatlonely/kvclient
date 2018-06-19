@@ -118,13 +118,13 @@ func (rc *RedisClusterString) SetEx(key string, val []byte, expiration time.Dura
 }
 
 // SetNx set if not exists
-func (rc *RedisClusterString) SetNx(key string, val []byte) error {
-	return rc.client.SetNX(key, val, rc.expiration).Err()
+func (rc *RedisClusterString) SetNx(key string, val []byte) (bool, error) {
+	return rc.client.SetNX(key, val, rc.expiration).Result()
 }
 
 // SetExNx set if not exists with expiration
-func (rc *RedisClusterString) SetExNx(key string, val []byte, expiration time.Duration) error {
-	return rc.client.SetNX(key, val, expiration).Err()
+func (rc *RedisClusterString) SetExNx(key string, val []byte, expiration time.Duration) (bool, error) {
+	return rc.client.SetNX(key, val, expiration).Result()
 }
 
 // SetBatch set batch

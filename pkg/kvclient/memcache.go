@@ -85,7 +85,11 @@ func (m *Memcache) Set(key string, val []byte) error {
 
 // Del key
 func (m *Memcache) Del(key string) error {
-	return m.client.Delete(key)
+	err := m.client.Delete(key)
+	if err == memcache.ErrCacheMiss {
+		return nil
+	}
+	return err
 }
 
 // SetBatch set keys values
@@ -99,11 +103,11 @@ func (m *Memcache) SetEx(key string, val []byte, expiration time.Duration) error
 }
 
 // SetNx set if not exist
-func (m *Memcache) SetNx(key string, val []byte) error {
+func (m *Memcache) SetNx(key string, val []byte) (bool, error) {
 	return SetNx(m, key, val)
 }
 
 // SetExNx set if not exists with expiration
-func (m *Memcache) SetExNx(key string, val []byte, expiration time.Duration) error {
+func (m *Memcache) SetExNx(key string, val []byte, expiration time.Duration) (bool, error) {
 	return SetExNx(m, key, val, expiration)
 }

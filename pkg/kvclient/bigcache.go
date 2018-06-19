@@ -111,6 +111,6 @@ func (c *Bigcache) SetBatch(keys []string, vals [][]byte) ([]error, error) {
 }
 
 // SetNx set if not exist
-func (c *Bigcache) SetNx(key string, val []byte) error {
+func (c *Bigcache) SetNx(key string, val []byte) (bool, error) {
 	return SetNx(c, key, val)
 }

@@ -77,12 +77,12 @@ func (lc *Gcache) SetEx(key string, val []byte, expiration time.Duration) error 
 }
 
 // SetNx set if not exists
-func (lc *Gcache) SetNx(key string, val []byte) error {
+func (lc *Gcache) SetNx(key string, val []byte) (bool, error) {
 	return SetNx(lc, key, val)
 }
 
 // SetExNx set if not exists with expiration
-func (lc *Gcache) SetExNx(key string, val []byte, expiration time.Duration) error {
+func (lc *Gcache) SetExNx(key string, val []byte, expiration time.Duration) (bool, error) {
 	return SetExNx(lc, key, val, expiration)
 }
 

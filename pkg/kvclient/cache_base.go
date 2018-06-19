@@ -39,12 +39,12 @@ func (c *BaseCache) SetEx(key string, val []byte, expiration time.Duration) erro
 }
 
 // SetNx set if not exist
-func (c *BaseCache) SetNx(key string, val []byte) error {
+func (c *BaseCache) SetNx(key string, val []byte) (bool, error) {
 	panic("not implememt")
 }
 
 // SetExNx set with expiration if not exist
-func (c *BaseCache) SetExNx(key string, val []byte, expiration time.Duration) error {
+func (c *BaseCache) SetExNx(key string, val []byte, expiration time.Duration) (bool, error) {
 	panic("not implememt")
 }
 
@@ -66,30 +66,30 @@ func SetBatch(c Cache, keys []string, vals [][]byte) ([]error, error) {
 	return errs, err
 }
 
-// SetNx set if not exist
-func SetNx(c Cache, key string, val []byte) error {
-	val, err := c.Get(key)
+// SetNx set if not exists
+func SetNx(c Cache, key string, val []byte) (bool, error) {
+	gval, err := c.Get(key)
 	if err != nil {
-		return err
+		return false, err
 	}
 
-	if val != nil {
-		return nil
+	if gval != nil {
+		return false, nil
 	}
 
-	return c.Set(key, val)
+	return true, c.Set(key, val)
 }
 
 // SetExNx set if not exists with expiration
-func SetExNx(c Cache, key string, val []byte, expiration time.Duration) error {
-	val, err := c.Get(key)
+func SetExNx(c Cache, key string, val []byte, expiration time.Duration) (bool, error) {
+	gval, err := c.Get(key)
 	if err != nil {
-		return err
+		return false, err
 	}
 
-	if val != nil {
-		return nil
+	if gval != nil {
+		return false, nil
 	}
 
-	return c.SetEx(key, val, expiration)
+	return true, c.SetEx(key, val, expiration)
 }

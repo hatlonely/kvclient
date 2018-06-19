@@ -1,7 +1,6 @@
 package kvclient
 
 import (
-	"fmt"
 	"strconv"
 	"strings"
 	"time"
@@ -184,43 +183,16 @@ func (as *Aerospike) SetEx(key string, val []byte, expiration time.Duration) err
 }
 
 // SetNx set if not exists
-func (as *Aerospike) SetNx(key string, val []byte) error {
-	val, err := as.Get(key)
-	if err != nil {
-		return err
-	}
-
-	if val != nil {
-		return nil
-	}
-
-	return as.Set(key, val)
+func (as *Aerospike) SetNx(key string, val []byte) (bool, error) {
+	return SetNx(as, key, val)
 }
 
 // SetExNx set if not exists with expiration
-func (as *Aerospike) SetExNx(key string, val []byte, expiration time.Duration) error {
-	val, err := as.Get(key)
-	if err != nil {
-		return err
-	}
-
-	if val != nil {
-		return nil
-	}
-
-	return as.SetEx(key, val, expiration)
+func (as *Aerospike) SetExNx(key string, val []byte, expiration time.Duration) (bool, error) {
+	return SetExNx(as, key, val, expiration)
 }
 
 // SetBatch keys vals
 func (as *Aerospike) SetBatch(keys []string, vals [][]byte) ([]error, error) {
-	if len(keys) != len(vals) {
-		return nil, fmt.Errorf("assert len(keys)[%v] == len(vals)[%v] failed", len(keys), len(vals))
-	}
-
-	errs := make([]error, len(keys))
-	for i := range keys {
-		errs[i] = as.Set(keys[i], vals[i])
-	}
-
-	return errs, nil
+	return SetBatch(as, keys, vals)
 }

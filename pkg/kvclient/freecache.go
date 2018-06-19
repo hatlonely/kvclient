@@ -84,11 +84,11 @@ func (c *Freecache) SetEx(key string, val []byte, expiration time.Duration) erro
 }
 
 // SetNx set if not exist
-func (c *Freecache) SetNx(key string, val []byte) error {
+func (c *Freecache) SetNx(key string, val []byte) (bool, error) {
 	return SetNx(c, key, val)
 }
 
 // SetExNx set with expiration if not exists
-func (c *Freecache) SetExNx(key string, val []byte, expiration time.Duration) error {
+func (c *Freecache) SetExNx(key string, val []byte, expiration time.Duration) (bool, error) {
 	return SetExNx(c, key, val, expiration)
 }

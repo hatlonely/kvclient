@@ -135,6 +135,6 @@ func (l *LevelDB) SetBatch(keys []string, vals [][]byte) ([]error, error) {
 }
 
 // SetNx set if not exist.
-func (l *LevelDB) SetNx(key string, val []byte) error {
+func (l *LevelDB) SetNx(key string, val []byte) (bool, error) {
 	return SetNx(l, key, val)
 }

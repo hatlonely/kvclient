@@ -122,9 +122,9 @@ func (rc *RedisClusterHash) Del(key string) error {
 }
 
 // SetNx set if not exists
-func (rc *RedisClusterHash) SetNx(key string, val []byte) error {
+func (rc *RedisClusterHash) SetNx(key string, val []byte) (bool, error) {
 	k, f := rc.parseKey(key)
-	return rc.client.HSetNX(k, f, val).Err()
+	return rc.client.HSetNX(k, f, val).Result()
 }
 
 // SetBatch set batch

@@ -11,52 +11,52 @@ import (
 // NewFakeMyKVProducerBuilder create a new FakeMyKVProducerBuilder
 func NewFakeMyKVProducerBuilder() *FakeMyKVProducerBuilder {
 	return &FakeMyKVProducerBuilder{
-		threadNum: 10,
-		total:     20,
-		keyLen:    36,
-		valLen:    23,
+		ThreadNum: 10,
+		Total:     20,
+		KeyLen:    36,
+		ValLen:    23,
 	}
 }
 
 // FakeMyKVProducerBuilder fake my kv producer builder
 type FakeMyKVProducerBuilder struct {
-	threadNum int
-	total     int
-	keyLen    int
-	valLen    int
+	ThreadNum int
+	Total     int
+	KeyLen    int
+	ValLen    int
 }
 
 // WithThreadNum option
 func (b *FakeMyKVProducerBuilder) WithThreadNum(threadNum int) *FakeMyKVProducerBuilder {
-	b.threadNum = threadNum
+	b.ThreadNum = threadNum
 	return b
 }
 
 // WithTotal option
 func (b *FakeMyKVProducerBuilder) WithTotal(total int) *FakeMyKVProducerBuilder {
-	b.total = total
+	b.Total = total
 	return b
 }
 
 // WithKeyLen option
 func (b *FakeMyKVProducerBuilder) WithKeyLen(keyLen int) *FakeMyKVProducerBuilder {
-	b.keyLen = keyLen
+	b.KeyLen = keyLen
 	return b
 }
 
 // WithValLen option
 func (b *FakeMyKVProducerBuilder) WithValLen(valLen int) *FakeMyKVProducerBuilder {
-	b.valLen = valLen
+	b.ValLen = valLen
 	return b
 }
 
 // Build a FakeMyKVProducer
 func (b *FakeMyKVProducerBuilder) Build() *FakeMyKVProducer {
 	return &FakeMyKVProducer{
-		threadNum: b.threadNum,
-		total:     b.total,
-		keyLen:    b.keyLen,
-		valLen:    b.valLen,
+		threadNum: b.ThreadNum,
+		total:     b.Total,
+		keyLen:    b.KeyLen,
+		valLen:    b.ValLen,
 	}
 }
 

@@ -20,61 +20,61 @@ import (
 // NewS3KVProducerBuilder create a new S3Producer
 func NewS3KVProducerBuilder() *S3KVProducerBuilder {
 	return &S3KVProducerBuilder{
-		s3bucket:  "mob-emr-test",
-		s3prefix:  "user/mtech/dmp",
-		threadNum: 10,
-		verbose:   true,
-		mod:       1,
-		idx:       0,
+		S3bucket:  "mob-emr-test",
+		S3prefix:  "user/mtech/dmp",
+		ThreadNum: 10,
+		Verbose:   true,
+		Mod:       1,
+		Idx:       0,
 	}
 }
 
 // S3KVProducerBuilder s3 kv producer builder
 type S3KVProducerBuilder struct {
-	s3bucket  string
-	s3prefix  string
-	threadNum int
-	s3suffix  string
-	mod       int
-	idx       int
-	verbose   bool
+	S3bucket  string
+	S3prefix  string
+	ThreadNum int
+	S3suffix  string
+	Mod       int
+	Idx       int
+	Verbose   bool
 	coder     KVCoder
 }
 
 // WithS3Bucket option
 func (b *S3KVProducerBuilder) WithS3Bucket(s3bucket string) *S3KVProducerBuilder {
-	b.s3bucket = s3bucket
+	b.S3bucket = s3bucket
 	return b
 }
 
 // WithS3Prefix option
 func (b *S3KVProducerBuilder) WithS3Prefix(s3prefix string) *S3KVProducerBuilder {
-	b.s3prefix = s3prefix
+	b.S3prefix = s3prefix
 	return b
 }
 
 // WithS3Suffix option
 func (b *S3KVProducerBuilder) WithS3Suffix(s3suffix string) *S3KVProducerBuilder {
-	b.s3suffix = s3suffix
+	b.S3suffix = s3suffix
 	return b
 }
 
 // WithThreadNum option
 func (b *S3KVProducerBuilder) WithThreadNum(threadNum int) *S3KVProducerBuilder {
-	b.threadNum = threadNum
+	b.ThreadNum = threadNum
 	return b
 }
 
 // WithModIdx option
 func (b *S3KVProducerBuilder) WithModIdx(mod int, idx int) *S3KVProducerBuilder {
-	b.mod = mod
-	b.idx = idx
+	b.Mod = mod
+	b.Idx = idx
 	return b
 }
 
 // WithVerbose option
 func (b *S3KVProducerBuilder) WithVerbose(verbose bool) *S3KVProducerBuilder {
-	b.verbose = verbose
+	b.Verbose = verbose
 	return b
 }
 
@@ -95,14 +95,14 @@ func (b *S3KVProducerBuilder) Build() *S3KVProducer {
 	s3service := s3.New(sess)
 
 	return &S3KVProducer{
-		s3bucket:  b.s3bucket,
-		s3prefix:  b.s3prefix,
-		s3suffix:  b.s3suffix,
-		threadNum: b.threadNum,
+		s3bucket:  b.S3bucket,
+		s3prefix:  b.S3prefix,
+		s3suffix:  b.S3suffix,
+		threadNum: b.ThreadNum,
 		s3service: s3service,
-		verbose:   b.verbose,
-		mod:       b.mod,
-		idx:       b.idx,
+		verbose:   b.Verbose,
+		mod:       b.Mod,
+		idx:       b.Idx,
 	}
 }
 

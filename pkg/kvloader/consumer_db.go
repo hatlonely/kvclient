@@ -9,34 +9,34 @@ import (
 // NewDBKVConsumerBuilder create a new DBKVConsumerBuilder
 func NewDBKVConsumerBuilder() *DBKVConsumerBuilder {
 	return &DBKVConsumerBuilder{
-		threadNum: 10,
-		batch:     100,
+		ThreadNum: 10,
+		Batch:     100,
 	}
 }
 
 // DBKVConsumerBuilder db kv consumer builder
 type DBKVConsumerBuilder struct {
-	threadNum int
-	batch     int
-	verbose   bool
+	ThreadNum int
+	Batch     int
+	Verbose   bool
 	kvclient  kvclient.KVClient
 }
 
 // WithThreadNum option
 func (b *DBKVConsumerBuilder) WithThreadNum(threadNum int) *DBKVConsumerBuilder {
-	b.threadNum = threadNum
+	b.ThreadNum = threadNum
 	return b
 }
 
 // WithBatch option
 func (b *DBKVConsumerBuilder) WithBatch(batch int) *DBKVConsumerBuilder {
-	b.batch = batch
+	b.Batch = batch
 	return b
 }
 
 // WithVerbose option
 func (b *DBKVConsumerBuilder) WithVerbose(verbose bool) *DBKVConsumerBuilder {
-	b.verbose = verbose
+	b.Verbose = verbose
 	return b
 }
 
@@ -49,9 +49,9 @@ func (b *DBKVConsumerBuilder) WithKVClient(kvclient kvclient.KVClient) *DBKVCons
 // Build a DBKVConsumer
 func (b *DBKVConsumerBuilder) Build() *DBKVConsumer {
 	return &DBKVConsumer{
-		threadNum: b.threadNum,
-		batch:     b.batch,
-		verbose:   b.verbose,
+		threadNum: b.ThreadNum,
+		batch:     b.Batch,
+		verbose:   b.Verbose,
 		kvclient:  b.kvclient,
 	}
 }

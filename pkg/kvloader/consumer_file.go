@@ -11,27 +11,27 @@ import (
 // NewFileKVConsumerBuilder create a new FileKVConsumerBuilder
 func NewFileKVConsumerBuilder() *FileKVConsumerBuilder {
 	return &FileKVConsumerBuilder{
-		filePath: "data",
-		fileNum:  10,
+		FilePath: "data",
+		FileNum:  10,
 	}
 }
 
 // FileKVConsumerBuilder memory kv consumer builder
 type FileKVConsumerBuilder struct {
-	filePath string
-	fileNum  int
+	FilePath string
+	FileNum  int
 	coder    KVCoder
 }
 
 // WithFilePath option
 func (b *FileKVConsumerBuilder) WithFilePath(filePath string) *FileKVConsumerBuilder {
-	b.filePath = filePath
+	b.FilePath = filePath
 	return b
 }
 
 // WithFileNum option
 func (b *FileKVConsumerBuilder) WithFileNum(fileNum int) *FileKVConsumerBuilder {
-	b.fileNum = fileNum
+	b.FileNum = fileNum
 	return b
 }
 
@@ -44,8 +44,8 @@ func (b *FileKVConsumerBuilder) WithCoder(coder KVCoder) *FileKVConsumerBuilder 
 // Build a FileKVConsumer
 func (b *FileKVConsumerBuilder) Build() *FileKVConsumer {
 	return &FileKVConsumer{
-		filePath: b.filePath,
-		fileNum:  b.fileNum,
+		filePath: b.FilePath,
+		fileNum:  b.FileNum,
 		coder:    b.coder,
 	}
 }

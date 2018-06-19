@@ -70,15 +70,11 @@ func NewKVProducer(config *viper.Viper) (kvloader.KVProducer, error) {
 		if err != nil {
 			return nil, err
 		}
-		return kvloader.NewS3KVProducerBuilder().
-			WithS3Bucket(config.GetString("s3bucket")).
-			WithS3Prefix(config.GetString("s3prefix")).
-			WithS3Suffix(config.GetString("s3suffix")).
-			WithThreadNum(config.GetInt("threadNum")).
-			WithModIdx(config.GetInt("mod"), config.GetInt("idx")).
-			WithVerbose(config.GetBool("verbose")).
-			WithCoder(coder).
-			Build(), nil
+		builder := kvloader.NewS3KVProducerBuilder()
+		if err := config.Unmarshal(builder); err != nil {
+			return nil, err
+		}
+		return builder.WithCoder(coder).Build(), nil
 	} else if c == "FileKVProducer" {
 		// {
 		// 	"class": "FileKVProducer",
@@ -93,12 +89,11 @@ func NewKVProducer(config *viper.Viper) (kvloader.KVProducer, error) {
 		if err != nil {
 			return nil, err
 		}
-		return kvloader.NewFileKVProducerBuilder().
-			WithDirectory(config.GetString("directory")).
-			WithThreadNum(config.GetInt("threadNum")).
-			WithVerbose(config.GetBool("verbose")).
-			WithCoder(coder).
-			Build(), nil
+		builder := kvloader.NewFileKVProducerBuilder()
+		if err := config.Unmarshal(builder); err != nil {
+			return nil, err
+		}
+		return builder.WithCoder(coder).Build(), nil
 	} else if c == "FakeMyKVProducer" {
 		// {
 		// 	"class": "FakeMyKVProducer",
@@ -107,12 +102,11 @@ func NewKVProducer(config *viper.Viper) (kvloader.KVProducer, error) {
 		// 	"keyLen": 36,
 		// 	"valLen": 23
 		// }
-		return kvloader.NewFakeMyKVProducerBuilder().
-			WithThreadNum(config.GetInt("threadNum")).
-			WithTotal(config.GetInt("total")).
-			WithKeyLen(config.GetInt("keyLen")).
-			WithValLen(config.GetInt("valLen")).
-			Build(), nil
+		builder := kvloader.NewFakeMyKVProducerBuilder()
+		if err := config.Unmarshal(builder); err != nil {
+			return nil, err
+		}
+		return builder.Build(), nil
 	}
 
 	return nil, fmt.Errorf("no kvproducer named %v", c)
@@ -132,18 +126,18 @@ func NewKVConsumer(config *viper.Viper) (kvloader.KVConsumer, error) {
 		// 			"aerospike"
 		// 		],
 		// 		"compressor": {
-		// 			"package": "dmp",
-		// 			"class": "OriginCompressor"
+		// 			"package": "mykv",
+		// 			"class": "Compressor"
 		// 		},
 		// 		"serializer": {
-		// 			"package": "dmp",
-		// 			"class": "ProtoSerializer"
+		// 			"package": "mykv",
+		// 			"class": "Serializer"
 		// 		},
 		// 		"aerospike": {
 		// 			"class": "Aerospike",
 		// 			"address": "172.31.19.27:3000,172.31.25.40:3000,172.31.23.48:3000",
-		// 			"namespace": "dmp",
-		// 			"setname": "dsp",
+		// 			"namespace": "test",
+		// 			"setname": "test",
 		// 			"timeoutMs": 200,
 		// 			"expirationS": 604800,
 		// 			"retries": 4
@@ -154,30 +148,29 @@ func NewKVConsumer(config *viper.Viper) (kvloader.KVConsumer, error) {
 		if err != nil {
 			return nil, err
 		}
-		return kvloader.NewDBKVConsumerBuilder().
-			WithThreadNum(config.GetInt("threadNum")).
-			WithBatch(config.GetInt("batch")).
-			WithVerbose(config.GetBool("verbose")).
-			WithKVClient(kvclient).
-			Build(), nil
+		builder := kvloader.NewDBKVConsumerBuilder()
+		if err := config.Unmarshal(builder); err != nil {
+			return nil, err
+		}
+		return builder.WithKVClient(kvclient).Build(), nil
 	} else if c == "FileKVConsumer" {
 		// {
 		// 	"class": "FileKVConsumer",
 		// 	"filePath": "data",
 		// 	"fileNum": 10,
 		// 	"coder": {
-		// 		"class": "DMPJSONKVCoder"
+		// 		"class": "MyKVCoder"
 		// 	}
 		// }
 		coder, err := NewKVCoder(config.Sub("coder"))
 		if err != nil {
 			return nil, err
 		}
-		return kvloader.NewFileKVConsumerBuilder().
-			WithFileNum(config.GetInt("fileNum")).
-			WithFilePath(config.GetString("filePath")).
-			WithCoder(coder).
-			Build(), nil
+		builder := kvloader.NewFileKVConsumerBuilder()
+		if err := config.Unmarshal(builder); err != nil {
+			return nil, err
+		}
+		return builder.WithCoder(coder).Build(), nil
 	} else if c == "MemKVConsumer" {
 		return kvloader.NewMemKVConsumerBuilder().Build(), nil
 	}

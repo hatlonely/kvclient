@@ -14,35 +14,35 @@ import (
 // NewFileKVProducerBuilder create a new FileProducer
 func NewFileKVProducerBuilder() *FileKVProducerBuilder {
 	return &FileKVProducerBuilder{
-		directory: "data",
-		threadNum: 10,
-		verbose:   true,
+		Directory: "data",
+		ThreadNum: 10,
+		Verbose:   true,
 	}
 }
 
 // FileKVProducerBuilder file kv producer builder
 type FileKVProducerBuilder struct {
-	directory string
-	threadNum int
-	verbose   bool
+	Directory string
+	ThreadNum int
+	Verbose   bool
 	coder     KVCoder
 }
 
 // WithDirectory option
 func (b *FileKVProducerBuilder) WithDirectory(directory string) *FileKVProducerBuilder {
-	b.directory = directory
+	b.Directory = directory
 	return b
 }
 
 // WithThreadNum option
 func (b *FileKVProducerBuilder) WithThreadNum(threadNum int) *FileKVProducerBuilder {
-	b.threadNum = threadNum
+	b.ThreadNum = threadNum
 	return b
 }
 
 // WithVerbose option
 func (b *FileKVProducerBuilder) WithVerbose(verbose bool) *FileKVProducerBuilder {
-	b.verbose = verbose
+	b.Verbose = verbose
 	return b
 }
 
@@ -55,9 +55,9 @@ func (b *FileKVProducerBuilder) WithCoder(coder KVCoder) *FileKVProducerBuilder 
 // Build a DBKVConsumer
 func (b *FileKVProducerBuilder) Build() *FileKVProducer {
 	return &FileKVProducer{
-		directory: b.directory,
-		threadNum: b.threadNum,
-		verbose:   b.verbose,
+		directory: b.Directory,
+		threadNum: b.ThreadNum,
+		verbose:   b.Verbose,
 		coder:     b.coder,
 	}
 }

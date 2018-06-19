@@ -3,7 +3,11 @@ kvclient -- kv storage
 
 ### 安装
 
-使用 glide 依赖管理工具
+```
+go get github.com/hatlonely/kvclient
+```
+
+或者使用 glide 依赖管理工具
 
 ```
 glide get github.com/hatlonely/kvclient

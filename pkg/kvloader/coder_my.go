@@ -43,10 +43,10 @@ func (c *MyKVCoder) Encode(info *KVInfo) (string, error) {
 	key, ok1 := info.Key.(*mykv.Key)
 	val, ok2 := info.Val.(*mykv.Val)
 	if !ok1 {
-		return "", fmt.Errorf("key [%v] is not type of kvclient.MyKey", info.Key)
+		return "", fmt.Errorf("key [%v] is not type of mykv.Key", info.Key)
 	}
 	if !ok2 {
-		return "", fmt.Errorf("val [%v] is not type of kvclient.MyVal", info.Val)
+		return "", fmt.Errorf("val [%v] is not type of mykv.Val", info.Val)
 	}
 
 	return key.Message + "\t" + val.Message, nil

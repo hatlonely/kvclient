@@ -160,7 +160,7 @@ func NewCompressor(config *viper.Viper) (kvclient.Compressor, error) {
 			return &mykv.Compressor{}, nil
 		}
 	}
-	return nil, fmt.Errorf("no compressor named %v", c)
+	return nil, fmt.Errorf("no compressor named %v.%v", pkg, c)
 }
 
 // NewSerializer create a new serializer
@@ -172,5 +172,5 @@ func NewSerializer(config *viper.Viper) (kvclient.Serializer, error) {
 			return &mykv.Serializer{}, nil
 		}
 	}
-	return nil, fmt.Errorf("no serializer named %v", c)
+	return nil, fmt.Errorf("no serializer named %v.%v", pkg, c)
 }

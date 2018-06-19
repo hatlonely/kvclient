@@ -1,7 +1,6 @@
 package kvclient
 
 import (
-	"fmt"
 	"strings"
 	"time"
 
@@ -61,13 +60,10 @@ func (b *MemcacheBuilder) Build() *Memcache {
 
 // Memcache cache
 type Memcache struct {
+	BaseCache
+
 	client     *memcache.Client
 	expiration time.Duration
-}
-
-// Close client. nothing to do
-func (m *Memcache) Close() error {
-	return nil
 }
 
 // Get key
@@ -94,21 +90,7 @@ func (m *Memcache) Del(key string) error {
 
 // SetBatch set keys values
 func (m *Memcache) SetBatch(keys []string, vals [][]byte) ([]error, error) {
-	if len(keys) != len(vals) {
-		return nil, fmt.Errorf("assert len(keys)[%v] == len(vals)[%v] failed", len(keys), len(vals))
-	}
-
-	var errs []error
-	var err error
-	for i := range keys {
-		serr := m.client.Set(&memcache.Item{Key: keys[i], Value: vals[i], Expiration: int32(m.expiration / time.Second)})
-		errs = append(errs, serr)
-		if serr != nil {
-			err = serr
-		}
-	}
-
-	return errs, err
+	return SetBatch(m, keys, vals)
 }
 
 // SetEx set with expiration
@@ -118,28 +100,10 @@ func (m *Memcache) SetEx(key string, val []byte, expiration time.Duration) error
 
 // SetNx set if not exist
 func (m *Memcache) SetNx(key string, val []byte) error {
-	val, err := m.Get(key)
-	if err != nil {
-		return err
-	}
-
-	if val != nil {
-		return nil
-	}
-
-	return m.Set(key, val)
+	return SetNx(m, key, val)
 }
 
 // SetExNx set if not exists with expiration
 func (m *Memcache) SetExNx(key string, val []byte, expiration time.Duration) error {
-	val, err := m.Get(key)
-	if err != nil {
-		return err
-	}
-
-	if val != nil {
-		return nil
-	}
-
-	return m.SetEx(key, val, expiration)
+	return SetExNx(m, key, val, expiration)
 }

@@ -84,6 +84,8 @@ func (b *RedisClusterHashBuilder) Build() (*RedisClusterHash, error) {
 
 // RedisClusterHash redis cluster client
 type RedisClusterHash struct {
+	BaseCache
+
 	client *redis.ClusterClient
 	keyIdx int
 	keyLen int
@@ -119,20 +121,10 @@ func (rc *RedisClusterHash) Del(key string) error {
 	return rc.client.HDel(k, f).Err()
 }
 
-// SetEx set with expiration. Redis hash doesn't support expiration.
-func (rc *RedisClusterHash) SetEx(key string, val []byte, expiration time.Duration) error {
-	panic("Unsupport operation SetEx")
-}
-
 // SetNx set if not exists
 func (rc *RedisClusterHash) SetNx(key string, val []byte) error {
 	k, f := rc.parseKey(key)
 	return rc.client.HSetNX(k, f, val).Err()
-}
-
-// SetExNx set if not exists with expiration. Redis hash doesn't support expiration.
-func (rc *RedisClusterHash) SetExNx(key string, val []byte, expiration time.Duration) error {
-	panic("Unsupport operation SetExNx")
 }
 
 // SetBatch set batch

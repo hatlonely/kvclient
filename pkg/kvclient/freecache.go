@@ -1,7 +1,6 @@
 package kvclient
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/coocood/freecache"
@@ -44,13 +43,10 @@ func (b *FreecacheBuilder) Build() *Freecache {
 
 // Freecache cache
 type Freecache struct {
+	BaseCache
+
 	cache      *freecache.Cache
 	expiration time.Duration
-}
-
-// Close cache. nothing to do
-func (c *Freecache) Close() error {
-	return nil
 }
 
 // Get key
@@ -79,16 +75,7 @@ func (c *Freecache) Del(key string) error {
 
 // SetBatch set keys values
 func (c *Freecache) SetBatch(keys []string, vals [][]byte) ([]error, error) {
-	if len(keys) != len(vals) {
-		return nil, fmt.Errorf("assert len(keys)[%v] == len(vals)[%v] failed", len(keys), len(vals))
-	}
-
-	errs := make([]error, len(keys))
-	for i := range keys {
-		errs[i] = c.Set(keys[i], vals[i])
-	}
-
-	return errs, nil
+	return SetBatch(c, keys, vals)
 }
 
 // SetEx set with expiration
@@ -98,28 +85,10 @@ func (c *Freecache) SetEx(key string, val []byte, expiration time.Duration) erro
 
 // SetNx set if not exist
 func (c *Freecache) SetNx(key string, val []byte) error {
-	val, err := c.Get(key)
-	if err != nil {
-		return err
-	}
-
-	if val != nil {
-		return nil
-	}
-
-	return c.Set(key, val)
+	return SetNx(c, key, val)
 }
 
 // SetExNx set with expiration if not exists
 func (c *Freecache) SetExNx(key string, val []byte, expiration time.Duration) error {
-	val, err := c.Get(key)
-	if err != nil {
-		return err
-	}
-
-	if val != nil {
-		return nil
-	}
-
-	return c.SetEx(key, val, expiration)
+	return SetExNx(c, key, val, expiration)
 }

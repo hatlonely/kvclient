@@ -1,7 +1,6 @@
 package kvclient
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/allegro/bigcache"
@@ -69,12 +68,9 @@ func (b *BigcacheBuilder) Build() (*Bigcache, error) {
 
 // Bigcache cache
 type Bigcache struct {
-	cache *bigcache.BigCache
-}
+	BaseCache
 
-// Close cache. nothing to do
-func (c *Bigcache) Close() error {
-	return nil
+	cache *bigcache.BigCache
 }
 
 // Get key
@@ -111,38 +107,10 @@ func (c *Bigcache) Del(key string) error {
 
 // SetBatch set keys values
 func (c *Bigcache) SetBatch(keys []string, vals [][]byte) ([]error, error) {
-	if len(keys) != len(vals) {
-		return nil, fmt.Errorf("assert len(keys)[%v] == len(vals)[%v] failed", len(keys), len(vals))
-	}
-
-	errs := make([]error, len(keys))
-	for i := range keys {
-		errs[i] = c.Set(keys[i], vals[i])
-	}
-
-	return errs, nil
-}
-
-// SetEx set with expiration. bigcache not support expiration. it use initial expiration for all keys
-func (c *Bigcache) SetEx(key string, val []byte, expiration time.Duration) error {
-	panic("Unsupport operation SetEx")
+	return SetBatch(c, keys, vals)
 }
 
 // SetNx set if not exist
 func (c *Bigcache) SetNx(key string, val []byte) error {
-	val, err := c.Get(key)
-	if err != nil {
-		return err
-	}
-
-	if val != nil {
-		return nil
-	}
-
-	return c.Set(key, val)
-}
-
-// SetExNx set with expiration if not exists. bigcache not support expiration. it use initial expiration for all keys
-func (c *Bigcache) SetExNx(key string, val []byte, expiration time.Duration) error {
-	panic("Unsupport operation SetExNx")
+	return SetNx(c, key, val)
 }

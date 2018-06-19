@@ -2,7 +2,6 @@ package kvclient
 
 import (
 	"fmt"
-	"time"
 
 	"github.com/syndtr/goleveldb/leveldb"
 	"github.com/syndtr/goleveldb/leveldb/opt"
@@ -84,6 +83,8 @@ func (b *LevelDBBuilder) Build() (*LevelDB, error) {
 
 // LevelDB datasource
 type LevelDB struct {
+	BaseCache
+
 	db       *leveldb.DB
 	roptions *opt.ReadOptions
 	woptions *opt.WriteOptions
@@ -133,26 +134,7 @@ func (l *LevelDB) SetBatch(keys []string, vals [][]byte) ([]error, error) {
 	return errs, err
 }
 
-// SetEx set with expiration. leveldb doesn't support expiration
-func (l *LevelDB) SetEx(key string, val []byte, expiration time.Duration) error {
-	panic("Unsupport operation SetEx")
-}
-
 // SetNx set if not exist.
 func (l *LevelDB) SetNx(key string, val []byte) error {
-	val, err := l.Get(key)
-	if err != nil {
-		return err
-	}
-
-	if val != nil {
-		return nil
-	}
-
-	return l.Set(key, val)
-}
-
-// SetExNx set with expiration if not exist. leveldb doesn't support.
-func (l *LevelDB) SetExNx(key string, val []byte, expiration time.Duration) error {
-	panic("Unsupport operation SetEx")
+	return SetNx(l, key, val)
 }

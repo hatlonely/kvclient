@@ -1,7 +1,6 @@
 package kvclient
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/bluele/gcache"
@@ -42,12 +41,9 @@ func (b *GcacheBuilder) WithExpiration(expiration time.Duration) *GcacheBuilder 
 
 // Gcache localcache implementation with `github.com/bluele/gcache`
 type Gcache struct {
-	cache gcache.Cache
-}
+	BaseCache
 
-// Close cache. nothing to do
-func (lc *Gcache) Close() error {
-	return nil
+	cache gcache.Cache
 }
 
 // Set set a key
@@ -82,42 +78,15 @@ func (lc *Gcache) SetEx(key string, val []byte, expiration time.Duration) error 
 
 // SetNx set if not exists
 func (lc *Gcache) SetNx(key string, val []byte) error {
-	val, err := lc.Get(key)
-	if err != nil {
-		return err
-	}
-
-	if val != nil {
-		return nil
-	}
-
-	return lc.Set(key, val)
+	return SetNx(lc, key, val)
 }
 
 // SetExNx set if not exists with expiration
 func (lc *Gcache) SetExNx(key string, val []byte, expiration time.Duration) error {
-	val, err := lc.Get(key)
-	if err != nil {
-		return err
-	}
-
-	if val != nil {
-		return nil
-	}
-
-	return lc.SetEx(key, val, expiration)
+	return SetExNx(lc, key, val, expiration)
 }
 
 // SetBatch keys vals
 func (lc *Gcache) SetBatch(keys []string, vals [][]byte) ([]error, error) {
-	if len(keys) != len(vals) {
-		return nil, fmt.Errorf("assert len(keys)[%v] == len(vals)[%v] failed", len(keys), len(vals))
-	}
-
-	errs := make([]error, len(keys))
-	for i := range keys {
-		errs[i] = lc.Set(keys[i], vals[i])
-	}
-
-	return errs, nil
+	return SetBatch(lc, keys, vals)
 }

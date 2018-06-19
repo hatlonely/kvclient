@@ -79,6 +79,8 @@ func (b *RedisClusterStringBuilder) Build() (*RedisClusterString, error) {
 
 // RedisClusterString redis cluster client
 type RedisClusterString struct {
+	BaseCache
+
 	client     *redis.ClusterClient
 	expiration time.Duration
 }

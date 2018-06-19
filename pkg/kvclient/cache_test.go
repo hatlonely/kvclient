@@ -124,7 +124,7 @@ func TestCache_All(t *testing.T) {
 			})
 		}
 
-		for i, cache := range []Cache{redisString, memcache, freecache, gcache} {
+		for i, cache := range []Cache{redisString, memcache, aerospike, freecache, gcache} {
 			Convey(fmt.Sprintf("loop-%v: set if not exists with expiration", i), func() {
 				So(cache.Del("key4"), ShouldBeNil)
 

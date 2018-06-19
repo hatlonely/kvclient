@@ -149,26 +149,25 @@ func (c *kvClient) Set(key interface{}, val interface{}) error {
 	}
 
 	for _, cache := range c.caches {
-		if seterr := cache.Set(keybuf, valbuf); seterr != nil {
-			err = seterr
+		if err := cache.Set(keybuf, valbuf); err != nil {
+			return err
 		}
 	}
 
-	return err
+	return nil
 }
 
 // Del key
 func (c *kvClient) Del(key interface{}) error {
 	keybuf := c.compressor.Compress(key)
 
-	var err error
 	for _, cache := range c.caches {
-		if delerr := cache.Del(keybuf); delerr != nil {
-			err = delerr
+		if err := cache.Del(keybuf); err != nil {
+			return err
 		}
 	}
 
-	return err
+	return nil
 }
 
 // SetEx set with expiration
@@ -180,11 +179,13 @@ func (c *kvClient) SetEx(key interface{}, val interface{}, expiration time.Durat
 		return err
 	}
 
-	for i := 0; i < len(c.caches)-1; i++ {
-		c.caches[i].SetEx(keybuf, valbuf, expiration)
+	for _, cache := range c.caches {
+		if err := cache.SetEx(keybuf, valbuf, expiration); err != nil {
+			return err
+		}
 	}
 
-	return c.caches[len(c.caches)-1].SetEx(keybuf, valbuf, expiration)
+	return nil
 }
 
 // SetNx set if not exist
@@ -197,7 +198,9 @@ func (c *kvClient) SetNx(key interface{}, val interface{}) (bool, error) {
 	}
 
 	for i := 0; i < len(c.caches)-1; i++ {
-		c.caches[i].SetNx(keybuf, valbuf)
+		if _, err := c.caches[i].SetNx(keybuf, valbuf); err != nil {
+			return false, err
+		}
 	}
 
 	return c.caches[len(c.caches)-1].SetNx(keybuf, valbuf)
@@ -213,7 +216,9 @@ func (c *kvClient) SetExNx(key interface{}, val interface{}, expiration time.Dur
 	}
 
 	for i := 0; i < len(c.caches)-1; i++ {
-		c.caches[i].SetExNx(keybuf, valbuf, expiration)
+		if _, err := c.caches[i].SetExNx(keybuf, valbuf, expiration); err != nil {
+			return false, err
+		}
 	}
 
 	return c.caches[len(c.caches)-1].SetExNx(keybuf, valbuf, expiration)
@@ -237,7 +242,9 @@ func (c *kvClient) SetBatch(keys []interface{}, vals []interface{}) ([]error, er
 	}
 
 	for i := 0; i < len(c.caches)-1; i++ {
-		c.caches[i].SetBatch(keybufs, valbufs)
+		if errs, err := c.caches[i].SetBatch(keybufs, valbufs); err != nil {
+			return errs, err
+		}
 	}
 
 	return c.caches[len(c.caches)-1].SetBatch(keybufs, valbufs)

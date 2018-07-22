@@ -103,6 +103,7 @@ func (b *S3KVProducerBuilder) Build() *S3KVProducer {
 		verbose:   b.Verbose,
 		mod:       b.Mod,
 		idx:       b.Idx,
+		coder:     b.coder,
 	}
 }
 

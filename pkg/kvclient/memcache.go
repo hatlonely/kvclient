@@ -111,3 +111,8 @@ func (m *Memcache) SetNx(key string, val []byte) (bool, error) {
 func (m *Memcache) SetExNx(key string, val []byte, expiration time.Duration) (bool, error) {
 	return SetExNx(m, key, val, expiration)
 }
+
+// GetBatch keys
+func (m *Memcache) GetBatch(keys []string) ([][]byte, []error, error) {
+	return GetBatch(m, keys)
+}

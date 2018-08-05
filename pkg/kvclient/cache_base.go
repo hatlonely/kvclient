@@ -48,6 +48,21 @@ func (c *BaseCache) SetExNx(key string, val []byte, expiration time.Duration) (b
 	panic("not implememt")
 }
 
+// GetBatch get keys
+func GetBatch(c Cache, keys []string) ([][]byte, []error, error) {
+	errs := make([]error, len(keys))
+	vals := make([][]byte, len(keys))
+	var err error
+	for i := range keys {
+		vals[i], errs[i] = c.Get(keys[i])
+		if errs[i] != nil {
+			err = errs[i]
+		}
+	}
+
+	return vals, errs, err
+}
+
 // SetBatch set keys values
 func SetBatch(c Cache, keys []string, vals [][]byte) ([]error, error) {
 	if len(keys) != len(vals) {

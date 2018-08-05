@@ -90,3 +90,8 @@ func (lc *Gcache) SetExNx(key string, val []byte, expiration time.Duration) (boo
 func (lc *Gcache) SetBatch(keys []string, vals [][]byte) ([]error, error) {
 	return SetBatch(lc, keys, vals)
 }
+
+// GetBatch keys
+func (lc *Gcache) GetBatch(keys []string) ([][]byte, []error, error) {
+	return GetBatch(lc, keys)
+}

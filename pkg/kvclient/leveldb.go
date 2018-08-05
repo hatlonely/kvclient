@@ -138,3 +138,8 @@ func (l *LevelDB) SetBatch(keys []string, vals [][]byte) ([]error, error) {
 func (l *LevelDB) SetNx(key string, val []byte) (bool, error) {
 	return SetNx(l, key, val)
 }
+
+// GetBatch keys
+func (l *LevelDB) GetBatch(keys []string) ([][]byte, []error, error) {
+	return GetBatch(l, keys)
+}

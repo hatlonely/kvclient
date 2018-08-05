@@ -152,3 +152,36 @@ func (rc *RedisClusterString) SetBatch(keys []string, vals [][]byte) ([]error, e
 
 	return errs, nil
 }
+
+// GetBatch keys
+func (rc *RedisClusterString) GetBatch(keys []string) ([][]byte, []error, error) {
+	pipe := rc.client.Pipeline()
+	defer pipe.Close()
+	cmds := make([]*redis.StringCmd, len(keys))
+
+	for i := range keys {
+		cmds[i] = pipe.Get(keys[i])
+	}
+
+	if _, err := pipe.Exec(); err != nil && err != redis.Nil {
+		return nil, nil, err
+	}
+
+	vals := make([][]byte, len(keys))
+	errs := make([]error, len(keys))
+	for i, cmd := range cmds {
+		err := cmd.Err()
+		if err == redis.Nil {
+			vals[i] = nil
+			errs[i] = nil
+		} else if err != nil {
+			vals[i] = nil
+			errs[i] = err
+		} else {
+			vals[i] = []byte(cmd.Val())
+			errs[i] = err
+		}
+	}
+
+	return vals, errs, nil
+}

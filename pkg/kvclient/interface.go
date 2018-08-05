@@ -23,7 +23,8 @@ type KVClient interface {
 	// if a key set NilValBuf as val, the key will take as not found
 	SetNilValBuf(buf []byte)
 	Get(key interface{}, val interface{}) (bool, error) // return false if key not found
-	Set(key interface{}, val interface{}) error         // key will expire with default configuration
+	GetBatch(keys []interface{}, vals []interface{}) ([]bool, []error, error)
+	Set(key interface{}, val interface{}) error // key will expire with default configuration
 	Del(key interface{}) error
 	SetBatch(keys []interface{}, vals []interface{}) ([]error, error)
 	SetEx(key interface{}, val interface{}, expiration time.Duration) error // set with expiration
@@ -38,6 +39,7 @@ type KVClient interface {
 // Cache interface
 type Cache interface {
 	Get(key string) ([]byte, error) // return nil, nil if key not found
+	GetBatch(keys []string) ([][]byte, []error, error)
 	// do not use nil as key or val. because nil val is not support for remote caches
 	// if necessary, consider `[]` instead
 	// key will expire with default configuration

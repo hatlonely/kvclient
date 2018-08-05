@@ -249,3 +249,39 @@ func (c *kvClient) SetBatch(keys []interface{}, vals []interface{}) ([]error, er
 
 	return c.caches[len(c.caches)-1].SetBatch(keybufs, valbufs)
 }
+
+// GetBatch get batch
+func (c *kvClient) GetBatch(keys []interface{}, vals []interface{}) ([]bool, []error, error) {
+	if len(keys) != len(vals) {
+		return nil, nil, fmt.Errorf("assert len(keys)[%v] == len(vals)[%v] failed", len(keys), len(vals))
+	}
+
+	var err error
+	keybufs := make([]string, len(keys))
+	for i := range keys {
+		keybufs[i] = c.compressor.Compress(keys[i])
+	}
+
+	valbufs, errs, err := c.caches[len(c.caches)-1].GetBatch(keybufs)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	oks := make([]bool, len(keys))
+	for i := range keys {
+		oks[i] = false
+		if errs[i] != nil {
+			continue
+		}
+		if valbufs[i] == nil {
+			continue
+		}
+		if err := c.serializer.Unmarshal(valbufs[i], vals[i]); err != nil {
+			errs[i] = err
+		} else {
+			oks[i] = true
+		}
+	}
+
+	return oks, errs, nil
+}

@@ -114,3 +114,8 @@ func (c *Bigcache) SetBatch(keys []string, vals [][]byte) ([]error, error) {
 func (c *Bigcache) SetNx(key string, val []byte) (bool, error) {
 	return SetNx(c, key, val)
 }
+
+// GetBatch keys
+func (c *Bigcache) GetBatch(keys []string) ([][]byte, []error, error) {
+	return GetBatch(c, keys)
+}

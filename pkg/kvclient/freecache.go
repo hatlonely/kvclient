@@ -92,3 +92,8 @@ func (c *Freecache) SetNx(key string, val []byte) (bool, error) {
 func (c *Freecache) SetExNx(key string, val []byte, expiration time.Duration) (bool, error) {
 	return SetExNx(c, key, val, expiration)
 }
+
+// GetBatch keys
+func (c *Freecache) GetBatch(keys []string) ([][]byte, []error, error) {
+	return GetBatch(c, keys)
+}

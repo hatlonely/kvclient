@@ -196,3 +196,8 @@ func (as *Aerospike) SetExNx(key string, val []byte, expiration time.Duration) (
 func (as *Aerospike) SetBatch(keys []string, vals [][]byte) ([]error, error) {
 	return SetBatch(as, keys, vals)
 }
+
+// GetBatch keys
+func (as *Aerospike) GetBatch(keys []string) ([][]byte, []error, error) {
+	return GetBatch(as, keys)
+}

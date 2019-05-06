@@ -10,7 +10,10 @@ import (
 
 func TestCache_All(t *testing.T) {
 	Convey("test cache all", t, func() {
-		redisHash, err := NewRedisClusterHashBuilder().
+		var caches1 []Cache
+		var caches2 []Cache
+
+		rch, err := NewRedisClusterHashBuilder().
 			WithAddress("127.0.0.1:7002").
 			WithRetries(3).
 			WithTimeout(time.Duration(240)*time.Millisecond).
@@ -18,8 +21,10 @@ func TestCache_All(t *testing.T) {
 			WithKeyIdxLen(8, 7).
 			Build()
 		So(err, ShouldBeNil)
-		defer redisHash.Close()
-		redisString, err := NewRedisClusterStringBuilder().
+		defer rch.Close()
+		caches1 = append(caches1, rch)
+
+		rcs, err := NewRedisClusterStringBuilder().
 			WithAddress("127.0.0.1:7002").
 			WithRetries(3).
 			WithTimeout(time.Duration(240) * time.Millisecond).
@@ -27,7 +32,33 @@ func TestCache_All(t *testing.T) {
 			WithPoolSize(15).
 			Build()
 		So(err, ShouldBeNil)
-		defer redisString.Close()
+		defer rcs.Close()
+		caches1 = append(caches1, rcs)
+		caches2 = append(caches2, rcs)
+
+		rs, err := NewRedisStringBuilder().
+			WithAddress("127.0.0.1:6379").
+			WithRetries(3).
+			WithTimeout(time.Duration(240) * time.Millisecond).
+			WithExpiration(time.Duration(1) * time.Second).
+			WithPoolSize(15).
+			Build()
+		So(err, ShouldBeNil)
+		defer rs.Close()
+		caches1 = append(caches1, rs)
+		caches2 = append(caches2, rs)
+
+		rh, err := NewRedisHashBuilder().
+			WithAddress("127.0.0.1:6379").
+			WithRetries(3).
+			WithTimeout(time.Duration(240)*time.Millisecond).
+			WithPoolSize(15).
+			WithKeyIdxLen(8, 7).
+			Build()
+		So(err, ShouldBeNil)
+		defer rh.Close()
+		caches1 = append(caches1, rh)
+
 		aerospike, err := NewAerospikeBuilder().
 			WithAddress("127.0.0.1:3000").
 			WithNamespace("dmp").
@@ -38,20 +69,35 @@ func TestCache_All(t *testing.T) {
 			Build()
 		So(err, ShouldBeNil)
 		defer aerospike.Close()
+		caches1 = append(caches1, aerospike)
+		caches2 = append(caches2, aerospike)
+
 		gcache := NewGcacheBuilder().Build()
 		defer gcache.Close()
+		caches1 = append(caches1, gcache)
+		caches2 = append(caches2, gcache)
+
 		levelDB, err := NewLevelDBBuilder().Build()
 		So(err, ShouldBeNil)
 		defer levelDB.Close()
+		caches1 = append(caches1, levelDB)
+
 		memcache := NewMemcacheBuilder().Build()
 		defer memcache.Close()
+		caches1 = append(caches1, memcache)
+		caches2 = append(caches2, memcache)
+
 		freecache := NewFreecacheBuilder().Build()
 		defer freecache.Close()
+		caches1 = append(caches1, freecache)
+		caches2 = append(caches2, freecache)
+
 		bigcache, err := NewBigcacheBuilder().Build()
 		So(err, ShouldBeNil)
 		defer bigcache.Close()
+		caches1 = append(caches1, bigcache)
 
-		for i, cache := range []Cache{redisHash, redisString, aerospike, gcache, levelDB, memcache, freecache, bigcache} {
+		for i, cache := range caches1 {
 			Convey(fmt.Sprintf("loop-%v: get a key that not exists", i), func() {
 				val, err := cache.Get("name")
 				So(err, ShouldEqual, nil)
@@ -124,7 +170,7 @@ func TestCache_All(t *testing.T) {
 			})
 		}
 
-		for i, cache := range []Cache{redisString, memcache, aerospike, freecache, gcache} {
+		for i, cache := range caches2 {
 			Convey(fmt.Sprintf("loop-%v: set if not exists with expiration", i), func() {
 				So(cache.Del("key4"), ShouldBeNil)
 
